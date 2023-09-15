@@ -8,7 +8,7 @@ edition = "2021"
 lightmap = { path = "../game" }
 
 [dependencies.fyrox ]
-path = "../../../../Fyrox"
+git = "https://github.com/FyroxEngine/Fyrox"
 
 [dependencies.fyroxed_base ]
-path = "../../../../Fyrox/editor"
+git = "https://github.com/FyroxEngine/Fyrox"
