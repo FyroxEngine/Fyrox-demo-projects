@@ -1,0 +1,10 @@
+
+[package]
+name = "lightmap"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[dependencies.fyrox ]
+path = "../../../../Fyrox"
