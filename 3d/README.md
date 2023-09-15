@@ -1,6 +1,6 @@
-## 2D Projects
+## 3D Projects
 
-This section contains 2D projects.
+This section contains 3D projects.
 
 ### How to run
 
