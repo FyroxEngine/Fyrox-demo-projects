@@ -1,5 +1,5 @@
 [workspace]
-members = ["editor", "executor", "game"]
+members = ["editor", "executor", "executor-wasm", "game"]
 resolver = "2"
 
 # Optimize the engine in debug builds, but leave project's code non-optimized.

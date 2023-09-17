@@ -1,22 +1,25 @@
 //! Game project.
+use fyrox::event_loop::ControlFlow;
 use fyrox::{
     animation::spritesheet::SpriteSheetAnimation,
     core::{
         algebra::{Vector2, Vector3},
-        futures::executor::block_on,
+        log::Log,
         pool::Handle,
         reflect::prelude::*,
         uuid::{uuid, Uuid},
         visitor::prelude::*,
         TypeUuidProvider,
     },
-    event::{ElementState, Event, VirtualKeyCode, WindowEvent},
+    event::{ElementState, Event, WindowEvent},
     impl_component_provider,
+    keyboard::KeyCode,
     plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
+    scene::loader::AsyncSceneLoader,
     scene::{
         dim2::{rectangle::Rectangle, rigidbody::RigidBody},
         node::Node,
-        Scene, SceneLoader,
+        Scene,
     },
     script::{ScriptContext, ScriptTrait},
 };
@@ -47,31 +50,41 @@ impl PluginConstructor for GameConstructor {
 
 pub struct Game {
     scene: Handle<Scene>,
+    loader: Option<AsyncSceneLoader>,
 }
 
 impl Game {
     pub fn new(override_scene: Handle<Scene>, context: PluginContext) -> Self {
+        let mut loader = None;
         let scene = if override_scene.is_some() {
             override_scene
         } else {
-            let scene = block_on(
-                block_on(SceneLoader::from_file(
-                    "data/scene.rgs",
-                    context.serialization_context.clone(),
-                    context.resource_manager.clone(),
-                ))
-                .unwrap()
-                .finish(),
-            );
-
-            context.scenes.add(scene)
+            loader = Some(AsyncSceneLoader::begin_loading(
+                "data/scene.rgs".into(),
+                context.serialization_context.clone(),
+                context.resource_manager.clone(),
+            ));
+            Default::default()
         };
 
-        Self { scene }
+        Self { scene, loader }
     }
 }
 
-impl Plugin for Game {}
+impl Plugin for Game {
+    fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
+        if let Some(loader) = self.loader.as_ref() {
+            if let Some(result) = loader.fetch_result() {
+                match result {
+                    Ok(scene) => {
+                        self.scene = context.scenes.add(scene);
+                    }
+                    Err(err) => Log::err(err),
+                }
+            }
+        }
+    }
+}
 
 #[derive(Visit, Reflect, Debug, Clone)]
 struct Player {
@@ -109,16 +122,14 @@ impl ScriptTrait for Player {
     // Called everytime when there is an event from OS (mouse click, key press, etc.)
     fn on_os_event(&mut self, event: &Event<()>, _context: &mut ScriptContext) {
         if let Event::WindowEvent { event, .. } = event {
-            if let WindowEvent::KeyboardInput { input, .. } = event {
-                if let Some(keycode) = input.virtual_keycode {
-                    let is_pressed = input.state == ElementState::Pressed;
+            if let WindowEvent::KeyboardInput { event: input, .. } = event {
+                let is_pressed = input.state == ElementState::Pressed;
 
-                    match keycode {
-                        VirtualKeyCode::A => self.move_left = is_pressed,
-                        VirtualKeyCode::D => self.move_right = is_pressed,
-                        VirtualKeyCode::Space => self.jump = is_pressed,
-                        _ => (),
-                    }
+                match input.physical_key {
+                    KeyCode::KeyA => self.move_left = is_pressed,
+                    KeyCode::KeyD => self.move_right = is_pressed,
+                    KeyCode::Space => self.jump = is_pressed,
+                    _ => (),
                 }
             }
         }
