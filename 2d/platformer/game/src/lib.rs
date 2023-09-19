@@ -1,5 +1,4 @@
 //! Game project.
-use fyrox::event_loop::ControlFlow;
 use fyrox::{
     animation::spritesheet::SpriteSheetAnimation,
     core::{
@@ -11,13 +10,21 @@ use fyrox::{
         visitor::prelude::*,
         TypeUuidProvider,
     },
+    engine::GraphicsContext,
     event::{ElementState, Event, WindowEvent},
+    event_loop::ControlFlow,
+    gui::{
+        message::MessageDirection,
+        text::{TextBuilder, TextMessage},
+        widget::WidgetBuilder,
+        UiNode,
+    },
     impl_component_provider,
     keyboard::KeyCode,
     plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
-    scene::loader::AsyncSceneLoader,
     scene::{
         dim2::{rectangle::Rectangle, rigidbody::RigidBody},
+        loader::AsyncSceneLoader,
         node::Node,
         Scene,
     },
@@ -51,6 +58,7 @@ impl PluginConstructor for GameConstructor {
 pub struct Game {
     scene: Handle<Scene>,
     loader: Option<AsyncSceneLoader>,
+    debug_text: Handle<UiNode>,
 }
 
 impl Game {
@@ -67,7 +75,14 @@ impl Game {
             Default::default()
         };
 
-        Self { scene, loader }
+        let debug_text =
+            TextBuilder::new(WidgetBuilder::new()).build(&mut context.user_interface.build_ctx());
+
+        Self {
+            scene,
+            loader,
+            debug_text,
+        }
     }
 }
 
@@ -82,6 +97,14 @@ impl Plugin for Game {
                     Err(err) => Log::err(err),
                 }
             }
+        }
+
+        if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
+            context.user_interface.send_message(TextMessage::text(
+                self.debug_text,
+                MessageDirection::ToWidget,
+                format!("{}", graphics_context.renderer.get_statistics()),
+            ));
         }
     }
 }

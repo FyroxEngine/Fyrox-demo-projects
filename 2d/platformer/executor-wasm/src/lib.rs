@@ -44,7 +44,7 @@ pub fn set_panic_hook() {
 pub fn main() {
     set_panic_hook();
     let mut executor = Executor::from_params(
-        EventLoop::new(),
+        EventLoop::new().unwrap(),
         GraphicsContextParams {
             window_attributes: WindowAttributes {
                 inner_size: Some(LogicalSize::new(800, 600).into()),
