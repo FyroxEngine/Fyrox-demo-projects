@@ -1,0 +1,258 @@
+[INFO]: 211 was not big enough for font atlas trying again with 274
+[WARNING]: Unable to load options file data/Sponza.fbx.options for data/Sponza.fbx resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Trying to load "data/Sponza.fbx"
+[WARNING]: Unable to load options file data/age_of_mythology.ogg.options for data/age_of_mythology.ogg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: SceneLoader::finish() - Collecting resources used by the scene...
+[INFO]: SceneLoader::finish() - 8 resources collected. Waiting them to load...
+[INFO]: HRIR sphere "data/hrtf.hrir" is loaded!
+[INFO]: Supported GL Extensions: {"GL_ARB_shader_draw_parameters", "GL_ARB_multisample", "GL_NV_light_max_exponent", "GL_EXT_blend_color", "GL_EXT_multiview_texture_multisample", "GL_ARB_cull_distance", "GL_EXT_draw_range_elements", "GL_ARB_depth_clamp", "GL_NV_transform_feedback", "GL_ARB_provoking_vertex", "GL_NV_fragment_program", "GL_ARB_instanced_arrays", "GL_ARB_depth_buffer_float", "GL_NV_clip_space_w_scaling", "GL_NV_sample_locations", "GL_EXT_framebuffer_blit", "GL_NV_vertex_buffer_unified_memory", "GL_NV_conservative_raster", "GL_EXT_import_sync_object", "GL_ARB_blend_func_extended", "GL_ARB_point_sprite", "GL_ARB_point_parameters", "GL_EXT_framebuffer_sRGB", "GL_ARB_map_buffer_alignment", "GL_ARB_derivative_control", "GL_ARB_half_float_pixel", "GL_ARB_texture_storage", "GL_EXT_shader_image_load_store", "GL_EXT_win32_keyed_mutex", "GL_NV_path_rendering", "GL_SGIX_shadow", "GL_ARB_spirv_extensions", "GL_EXT_depth_bounds_test", "GL_KHR_blend_equation_advanced", "GL_EXT_texture_cube_map", "GL_ARB_texture_rgb10_a2ui", "GL_EXT_texture_filter_anisotropic", "GL_NV_texture_shader", "GL_NV_memory_object_sparse", "GL_NV_conservative_raster_pre_snap_triangles", "GL_NV_ES3_1_compatibility", "GL_ARB_texture_env_dot3", "GL_ARB_fragment_shader_interlock", "GL_ARB_multitexture", "GL_ARB_shadow", "GL_ARB_texture_rg", "GL_NV_point_sprite", "GL_ARB_geometry_shader4", "GL_EXT_stencil_wrap", "GL_ARB_shader_image_load_store", "GL_EXT_packed_float", "GL_EXT_gpu_shader4", "GL_ARB_fragment_shader", "GL_ARB_robustness", "GL_ARB_gpu_shader5", "GL_AMD_vertex_shader_viewport_index", "GL_NV_depth_clamp", "GL_ARB_copy_buffer", "GL_ARB_shader_texture_lod", "GL_NV_register_combiners", "GL_EXT_memory_object", "GL_NV_shader_atomic_counters", "GL_EXT_texture_lod_bias", "GL_KHR_context_flush_control", "GL_EXT_raster_multisample", "GL_NV_bindless_multi_draw_indirect_count", "GL_NV_shader_subgroup_partitioned", "GL_ARB_pixel_buffer_object", "GL_ARB_texture_env_crossbar", "GL_NV_texture_multisample", "GL_ARB_framebuffer_sRGB", "GL_EXT_texture_buffer_object", "GL_EXT_texture_env_combine", "GL_NV_blend_equation_advanced_coherent", "GL_NV_draw_texture", "GL_NV_gpu_multicast", "GL_ARB_vertex_buffer_object", "GL_ARB_uniform_buffer_object", "GL_EXT_texture_shadow_lod", "GL_EXT_vertex_array_bgra", "GL_NV_geometry_shader_passthrough", "GL_NV_shader_thread_group", "GL_ARB_gl_spirv", "GL_EXT_draw_instanced", "GL_EXT_framebuffer_multisample", "GL_EXT_vertex_array", "GL_KHR_blend_equation_advanced_coherent", "WGL_EXT_swap_control", "GL_ARB_compute_variable_group_size", "GL_ARB_shading_language_packing", "GL_ARB_texture_env_add", "GL_KTX_buffer_region", "GL_NV_conditional_render", "GL_ARB_color_buffer_float", "GL_EXT_compiled_vertex_array", "GL_ARB_copy_image", "GL_NV_bindless_texture", "GL_NV_packed_depth_stencil", "GL_ARB_texture_buffer_range", "GL_NV_vertex_program3", "GL_ARB_explicit_uniform_location", "GL_EXT_framebuffer_object", "GL_EXT_draw_buffers2", "GL_EXT_blend_func_separate", "GL_EXT_texture_sRGB_R8", "GL_NV_occlusion_query", "GL_NV_shader_storage_buffer_object", "GL_EXT_gpu_program_parameters", "GL_ARB_texture_query_levels", "GL_ARB_framebuffer_object", "GL_NV_path_rendering_shared_edge", "GL_SUN_slice_accum", "GL_NV_vertex_program1_1", "GL_ARB_debug_output", "GL_ARB_transpose_matrix", "GL_EXT_provoking_vertex", "GL_ARB_shader_atomic_counter_ops", "GL_NV_gpu_shader5", "GL_ARB_stencil_texturing", "GL_ARB_texture_cube_map_array", "GL_ARB_transform_feedback3", "GL_EXT_texture3D", "GL_ARB_texture_storage_multisample", "GL_NV_fill_rectangle", "GL_ARB_ES3_compatibility", "GL_NV_gpu_program4", "GL_ARB_texture_query_lod", "GL_EXTX_framebuffer_mixed_formats", "GL_ARB_occlusion_query2", "GL_NV_multisample_coverage", "GL_EXT_stencil_two_side", "GL_ARB_fragment_layer_viewport", "GL_NV_parameter_buffer_object2", "GL_NVX_nvenc_interop", "GL_EXT_texture_compression_latc", "GL_ARB_sparse_texture2", "GL_ARB_texture_border_clamp", "GL_ARB_draw_elements_base_vertex", "GL_ARB_texture_filter_minmax", "GL_ARB_texture_barrier", "GL_EXT_shader_integer_mix", "GL_EXT_texture_shared_exponent", "GL_ARB_shader_precision", "GL_NV_register_combiners2", "GL_NVX_blend_equation_advanced_multi_draw_buffers", "GL_ARB_base_instance", "GL_ARB_shader_bit_encoding", "GL_EXT_shadow_funcs", "GL_EXT_texture_compression_s3tc", "GL_EXT_framebuffer_multisample_blit_scaled", "GL_NV_texture_rectangle", "GL_ARB_framebuffer_no_attachments", "GL_EXT_abgr", "GL_ARB_internalformat_query2", "GL_NV_draw_vulkan_image", "GL_EXT_multiview_timer_query", "GL_AMD_vertex_shader_layer", "GL_NV_texture_shader3", "GL_ARB_texture_gather", "GL_EXT_packed_depth_stencil", "GL_ARB_compute_shader", "GL_IBM_texture_mirrored_repeat", "GL_ARB_polygon_offset_clamp", "GL_ARB_shading_language_420pack", "GL_NV_gpu_program4_1", "GL_EXT_sparse_texture2", "GL_ARB_sample_locations", "GL_ARB_multi_draw_indirect", "GL_AMD_seamless_cubemap_per_texture", "GL_ARB_gpu_shader_int64", "GL_ARB_texture_cube_map", "GL_ARB_draw_indirect", "GL_ARB_shader_viewport_layer_array", "GL_ARB_sync", "GL_EXT_multi_draw_arrays", "GL_ARB_texture_stencil8", "GL_EXT_texture_compression_rgtc", "GL_NV_explicit_multisample", "GL_NV_gpu_program5_mem_extended", "GL_ARB_get_program_binary", "GL_ARB_texture_multisample", "GL_EXT_bgra", "GL_EXT_Cg_shader", "GL_ARB_timer_query", "GL_EXT_texture_mirror_clamp", "GL_ARB_pipeline_statistics_query", "GL_NV_query_resource_tag", "GL_NV_vertex_array_range2", "GL_ARB_shading_language_include", "GL_EXT_geometry_shader4", "GL_NV_viewport_swizzle", "GL_NV_shader_atomic_float", "GL_NVX_linked_gpu_multicast", "GL_ARB_fragment_program_shadow", "GL_KHR_shader_subgroup", "GL_NV_texture_rectangle_compressed", "GL_NV_fragment_shader_interlock", "GL_ARB_arrays_of_arrays", "GL_ARB_indirect_parameters", "GL_EXT_blend_minmax", "GL_EXT_texture_edge_clamp", "GL_EXT_texture_array", "GL_ARB_shader_atomic_counters", "GL_NV_framebuffer_multisample_coverage", "GL_ARB_draw_buffers", "GL_ARB_compressed_texture_pixel_storage", "GL_ARB_shader_objects", "GL_NV_vertex_array_range", "GL_NV_depth_buffer_float", "GL_NV_pixel_data_range", "GL_NVX_progress_fence", "GL_ARB_transform_feedback_instanced", "GL_ARB_imaging", "GL_NV_vertex_attrib_integer_64bit", "GL_ARB_vertex_array_bgra", "GL_ARB_conditional_render_inverted", "GL_EXT_pixel_buffer_object", "GL_ARB_shader_image_size", "GL_ARB_shader_subroutine", "GL_ARB_depth_texture", "GL_ARB_shading_language_100", "GL_EXT_direct_state_access", "GL_NV_timeline_semaphore", "GL_EXT_texture_swizzle", "GL_NV_shader_atomic_float64", "GL_ARB_post_depth_coverage", "GL_ARB_fragment_coord_conventions", "GL_NV_blend_square", "GL_ARB_vertex_shader", "GL_EXT_point_parameters", "GL_ARB_buffer_storage", "GL_NV_stereo_view_rendering", "GL_ARB_invalidate_subdata", "GL_NV_texture_compression_vtc", "GL_NV_ES1_1_compatibility", "GL_ARB_program_interface_query", "GL_SGIX_depth_texture", "GL_ARB_vertex_type_10f_11f_11f_rev", "GL_NV_blend_equation_advanced", "GL_NV_texture_shader2", "GL_ARB_draw_instanced", "GL_ARB_sparse_texture_clamp", "GL_ARB_vertex_program", "GL_EXT_vertex_attrib_64bit", "GL_OVR_multiview2", "GL_EXT_separate_shader_objects", "GL_NV_fragment_coverage_to_color", "GL_ARB_sparse_buffer", "GL_ARB_vertex_attrib_binding", "GL_EXT_shader_image_load_formatted", "GL_NV_fence", "GL_KHR_debug", "GL_NV_alpha_to_coverage_dither_control", "GL_NV_half_float", "GL_ARB_texture_view", "GL_ATI_texture_mirror_once", "GL_AMD_multi_draw_indirect", "GL_EXT_transform_feedback2", "GL_ARB_direct_state_access", "GL_ARB_ES3_2_compatibility", "GL_EXT_separate_specular_color", "GL_KHR_no_error", "GL_ARB_clip_control", "GL_EXT_texture_filter_minmax", "GL_EXT_fog_coord", "GL_NV_primitive_restart", "GL_ARB_half_float_vertex", "GL_NV_fog_distance", "GL_NV_command_list", "GL_EXT_texture_lod", "GL_EXT_semaphore_win32", "GL_EXT_window_rectangles", "GL_ARB_enhanced_layouts", "GL_EXT_blend_subtract", "GL_EXT_texture_env_add", "GL_ARB_clear_texture", "GL_IBM_rasterpos_clip", "GL_NV_shader_thread_shuffle", "GL_ARB_explicit_attrib_location", "GL_ARB_texture_mirror_clamp_to_edge", "GL_NV_shader_atomic_fp16_vector", "GL_NV_internalformat_sample_query", "GL_ARB_texture_swizzle", "GL_ARB_gpu_shader_fp64", "GL_ARB_vertex_type_2_10_10_10_rev", "GL_ARB_texture_mirrored_repeat", "GL_S3_s3tc", "GL_EXT_texture_integer", "GL_NV_feature_query", "GL_ARB_sampler_objects", "GL_ARB_separate_shader_objects", "GL_EXT_texture_env_dot3", "GL_ARB_get_texture_sub_image", "GL_EXT_bindable_uniform", "GL_ARB_texture_non_power_of_two", "GL_ARB_sparse_texture", "GL_NV_blend_minmax_factor", "GL_NV_memory_attachment", "GL_NV_shader_atomic_int64", "GL_ARB_texture_buffer_object", "GL_ARB_texture_compression_bptc", "GL_ARB_texture_compression_rgtc", "GL_ARB_ES3_1_compatibility", "GL_ARB_viewport_array", "GL_NVX_conditional_render", "GL_SGIS_texture_lod", "GL_ARB_seamless_cube_map", "GL_NV_framebuffer_mixed_samples", "GL_NVX_gpu_memory_info", "GL_EXT_blend_equation_separate", "GL_ARB_robust_buffer_access_behavior", "GL_EXT_polygon_offset_clamp", "GL_ARB_map_buffer_range", "GL_ARB_query_buffer_object", "GL_WIN_swap_hint", "GL_ARB_transform_feedback2", "GL_KHR_robust_buffer_access_behavior", "GL_NV_uniform_buffer_unified_memory", "GL_EXT_texture_storage", "GL_NV_bindless_multi_draw_indirect", "GL_ARB_conservative_depth", "GL_NV_parameter_buffer_object", "GL_NV_conservative_raster_dilate", "GL_NV_vertex_program2_option", "GL_ARB_window_pos", "GL_ARB_draw_buffers_blend", "GL_ARB_bindless_texture", "GL_ARB_ES2_compatibility", "GL_ARB_sample_shading", "GL_NV_float_buffer", "GL_NV_gpu_program5", "GL_ARB_multi_bind", "GL_ARB_shader_storage_buffer_object", "GL_ARB_shader_clock", "GL_ATI_texture_float", "GL_EXT_texture_compression_dxt1", "GL_NV_copy_depth_to_color", "GL_ARB_shader_group_vote", "GL_NV_gpu_program_fp64", "GL_NV_multisample_filter_hint", "GL_NV_sample_mask_override_coverage", "GL_KHR_parallel_shader_compile", "GL_ARB_seamless_cubemap_per_texture", "GL_ARB_texture_filter_anisotropic", "GL_NV_vertex_program2", "GL_NVX_gpu_multicast2", "GL_OVR_multiview", "GL_ARB_fragment_program", "GL_EXT_semaphore", "GL_ARB_transform_feedback_overflow_query", "GL_ARB_clear_buffer_object", "GL_NV_shader_buffer_load", "GL_EXT_texture_object", "GL_ARB_parallel_shader_compile", "GL_ARB_texture_compression", "GL_NV_query_resource", "GL_ARB_texture_env_combine", "GL_EXT_memory_object_win32", "GL_NV_transform_feedback2", "GL_NV_compute_program5", "GL_NV_vertex_program", "GL_NVX_multigpu_info", "GL_SGIS_generate_mipmap", "GL_ATI_draw_buffers", "GL_NV_fragment_program2", "GL_ARB_vertex_array_object", "GL_EXT_texture_sRGB_decode", "GL_EXT_rescale_normal", "GL_ARB_shader_ballot", "GL_NV_texgen_reflection", "GL_KHR_robustness", "GL_NV_geometry_shader4", "GL_ARB_texture_float", "GL_NV_texture_env_combine4", "GL_ARB_texture_rectangle", "GL_NV_viewport_array2", "GL_ARB_internalformat_query", "GL_ARB_vertex_attrib_64bit", "GL_NV_fragment_program_option", "GL_ARB_shader_texture_image_samples", "GL_EXT_texture_sRGB", "GL_ARB_occlusion_query", "GL_EXT_packed_pixels", "GL_NV_copy_image", "GL_EXT_timer_query", "GL_EXT_post_depth_coverage", "GL_ARB_tessellation_shader", "GL_NV_texture_barrier", "GL_ARB_texture_buffer_object_rgb32", "GL_EXT_secondary_color"}
+[INFO]: Shader StandardShader_GBuffer_VertexShader compiled successfully!
+[INFO]: Shader StandardShader_GBuffer_FragmentShader compiled successfully!
+[INFO]: Shader StandardShader_GBuffer linked successfully!
+[INFO]: Shader StandardShader_Forward_VertexShader compiled successfully!
+[INFO]: Shader StandardShader_Forward_FragmentShader compiled successfully!
+[INFO]: Shader StandardShader_Forward linked successfully!
+[INFO]: Shader StandardShader_DirectionalShadow_VertexShader compiled successfully!
+[INFO]: Shader StandardShader_DirectionalShadow_FragmentShader compiled successfully!
+[INFO]: Shader StandardShader_DirectionalShadow linked successfully!
+[INFO]: Shader StandardShader_SpotShadow_VertexShader compiled successfully!
+[INFO]: Shader StandardShader_SpotShadow_FragmentShader compiled successfully!
+[INFO]: Shader StandardShader_SpotShadow linked successfully!
+[INFO]: Shader StandardShader_PointShadow_VertexShader compiled successfully!
+[INFO]: Shader StandardShader_PointShadow_FragmentShader compiled successfully!
+[INFO]: Shader StandardShader_PointShadow linked successfully!
+[WARNING]: Unable to load options file data\Sponza_Thorn_diffuse.png.options for data\Sponza_Thorn_diffuse.png resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Thorn_roughness.jpg.options for data\Sponza_Thorn_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\VasePlant_diffuse.png.options for data\VasePlant_diffuse.png resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\VasePlant_roughness.jpg.options for data\VasePlant_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\VaseRound_diffuse.jpg.options for data\VaseRound_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\VaseRound_roughness.jpg.options for data\VaseRound_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Background_Albedo.jpg.options for data\Background_Albedo.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Background_Roughness.jpg.options for data\Background_Roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Bricks_a_Albedo.jpg.options for data\Sponza_Bricks_a_Albedo.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Bricks_a_Roughness.jpg.options for data\Sponza_Bricks_a_Roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_GBuffer_VertexShader compiled successfully!
+[INFO]: Shader StandardTerrainShader_GBuffer_FragmentShader compiled successfully!
+[INFO]: Texture "data\\VaseRound_roughness.jpg" is loaded in 156.5223ms!
+[INFO]: Texture "data\\Sponza_Thorn_diffuse.png" is loaded in 162.2579ms!
+[INFO]: Texture "data\\VasePlant_diffuse.png" is loaded in 162.211ms!
+[INFO]: Shader StandardTerrainShader_GBuffer linked successfully!
+[WARNING]: Unable to load options file data\Sponza_Arch_roughness.jpg.options for data\Sponza_Arch_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Arch_diffuse.jpg.options for data\Sponza_Arch_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Thorn_roughness.jpg" is loaded in 197.0038ms!
+[WARNING]: Unable to load options file data\Sponza_Ceiling_diffuse.jpg.options for data\Sponza_Ceiling_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_Forward_VertexShader compiled successfully!
+[WARNING]: Unable to load options file data\Sponza_Ceiling_roughness.jpg.options for data\Sponza_Ceiling_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_Forward_FragmentShader compiled successfully!
+[INFO]: Texture "data\\Sponza_Bricks_a_Albedo.jpg" is loaded in 212.6099ms!
+[INFO]: Texture "data\\Background_Roughness.jpg" is loaded in 214.991ms!
+[INFO]: Texture "data\\Background_Albedo.jpg" is loaded in 221.2762ms!
+[WARNING]: Unable to load options file data\Sponza_Column_a_roughness.jpg.options for data\Sponza_Column_a_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Column_a_diffuse.jpg.options for data\Sponza_Column_a_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Floor_diffuse.jpg.options for data\Sponza_Floor_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\VaseRound_diffuse.jpg" is loaded in 252.7593ms!
+[WARNING]: Unable to load options file data\Sponza_Floor_roughness.jpg.options for data\Sponza_Floor_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Bricks_a_Roughness.jpg" is loaded in 282.7063ms!
+[INFO]: Texture "data\\VasePlant_roughness.jpg" is loaded in 298.7936ms!
+[WARNING]: Unable to load options file data\Sponza_Column_c_diffuse.jpg.options for data\Sponza_Column_c_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Column_c_roughness.jpg.options for data\Sponza_Column_c_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_Forward linked successfully!
+[INFO]: Texture "data\\Sponza_Ceiling_diffuse.jpg" is loaded in 166.5821ms!
+[WARNING]: Unable to load options file data\Sponza_Details_diffuse.jpg.options for data\Sponza_Details_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Arch_roughness.jpg" is loaded in 205.3647ms!
+[WARNING]: Unable to load options file data\Sponza_Details_roughness.jpg.options for data\Sponza_Details_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_SpotShadow_VertexShader compiled successfully!
+[INFO]: Texture "data\\Sponza_Column_a_roughness.jpg" is loaded in 186.4016ms!
+[WARNING]: Unable to load options file data\Sponza_Details_metallic.jpg.options for data\Sponza_Details_metallic.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_SpotShadow_FragmentShader compiled successfully!
+[INFO]: Texture "data\\Sponza_Arch_diffuse.jpg" is loaded in 246.953ms!
+[WARNING]: Unable to load options file data\Sponza_Column_b_diffuse.jpg.options for data\Sponza_Column_b_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Ceiling_roughness.jpg" is loaded in 255.4149ms!
+[WARNING]: Unable to load options file data\Sponza_Column_b_roughness.jpg.options for data\Sponza_Column_b_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Column_a_diffuse.jpg" is loaded in 275.0918ms!
+[WARNING]: Unable to load options file data\Sponza_FlagPole_diffuse.jpg.options for data\Sponza_FlagPole_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_SpotShadow linked successfully!
+[INFO]: Texture "data\\Sponza_Floor_diffuse.jpg" is loaded in 287.9268ms!
+[INFO]: Shader StandardTerrainShader_DirectionalShadow_VertexShader compiled successfully!
+[INFO]: Texture "data\\Sponza_Floor_roughness.jpg" is loaded in 287.2868ms!
+[INFO]: Texture "data\\Sponza_Column_c_roughness.jpg" is loaded in 208.3354ms!
+[WARNING]: Unable to load options file data\Sponza_FlagPole_roughness.jpg.options for data\Sponza_FlagPole_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Fabric_roughness.jpg.options for data\Sponza_Fabric_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Fabric_Green_diffuse.jpg.options for data\Sponza_Fabric_Green_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_DirectionalShadow_FragmentShader compiled successfully!
+[INFO]: Texture "data\\Sponza_Column_c_diffuse.jpg" is loaded in 265.1782ms!
+[WARNING]: Unable to load options file data\Sponza_Fabric_metallic.jpg.options for data\Sponza_Fabric_metallic.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_DirectionalShadow linked successfully!
+[INFO]: Texture "data\\Sponza_Details_roughness.jpg" is loaded in 248.9162ms!
+[WARNING]: Unable to load options file data\Sponza_Fabric_Blue_diffuse.jpg.options for data\Sponza_Fabric_Blue_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Details_diffuse.jpg" is loaded in 282.548ms!
+[WARNING]: Unable to load options file data\Sponza_Fabric_Red_diffuse.jpg.options for data\Sponza_Fabric_Red_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Details_metallic.jpg" is loaded in 272.1576ms!
+[INFO]: Shader StandardTerrainShader_PointShadow_VertexShader compiled successfully!
+[WARNING]: Unable to load options file data\Sponza_Curtain_Blue_diffuse.jpg.options for data\Sponza_Curtain_Blue_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Fabric_roughness.jpg" is loaded in 152.3262ms!
+[INFO]: Texture "data\\Sponza_FlagPole_diffuse.jpg" is loaded in 202.42ms!
+[WARNING]: Unable to load options file data\Sponza_Curtain_metallic.jpg.options for data\Sponza_Curtain_metallic.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[WARNING]: Unable to load options file data\Sponza_Curtain_roughness.jpg.options for data\Sponza_Curtain_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_PointShadow_FragmentShader compiled successfully!
+[INFO]: Texture "data\\Sponza_FlagPole_roughness.jpg" is loaded in 190.0396ms!
+[WARNING]: Unable to load options file data\Sponza_Curtain_Red_diffuse.jpg.options for data\Sponza_Curtain_Red_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Column_b_roughness.jpg" is loaded in 275.1754ms!
+[WARNING]: Unable to load options file data\Sponza_Curtain_Green_diffuse.jpg.options for data\Sponza_Curtain_Green_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Column_b_diffuse.jpg" is loaded in 325.8611ms!
+[WARNING]: Unable to load options file data\ChainTexture_Albedo.jpg.options for data\ChainTexture_Albedo.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTerrainShader_PointShadow linked successfully!
+[INFO]: Texture "data\\Sponza_Fabric_Green_diffuse.jpg" is loaded in 248.6324ms!
+[WARNING]: Unable to load options file data\ChainTexture_Roughness.jpg.options for data\ChainTexture_Roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTwoSidesShader_GBuffer_VertexShader compiled successfully!
+[INFO]: Shader StandardTwoSidesShader_GBuffer_FragmentShader compiled successfully!
+[INFO]: Texture "data\\Sponza_Fabric_metallic.jpg" is loaded in 218.2851ms!
+[WARNING]: Unable to load options file data\ChainTexture_Metallic.jpg.options for data\ChainTexture_Metallic.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Fabric_Red_diffuse.jpg" is loaded in 187.7847ms!
+[WARNING]: Unable to load options file data\VaseHanging_diffuse.jpg.options for data\VaseHanging_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: FBX "data/Sponza.fbx" loaded in 1844 ms
+	- Parsing - 892 ms
+	- DOM Prepare - 84 ms
+	- Conversion - 868 ms
+[INFO]: Texture "data\\Sponza_Fabric_Blue_diffuse.jpg" is loaded in 226.7734ms!
+[WARNING]: Unable to load options file data\VaseHanging_roughness.jpg.options for data\VaseHanging_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Curtain_Blue_diffuse.jpg" is loaded in 174.5796ms!
+[WARNING]: Unable to load options file data\Vase_diffuse.jpg.options for data\Vase_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Curtain_metallic.jpg" is loaded in 159.1593ms!
+[WARNING]: Unable to load options file data\Vase_roughness.jpg.options for data\Vase_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Curtain_roughness.jpg" is loaded in 171.3078ms!
+[WARNING]: Unable to load options file data\Lion_Albedo.jpg.options for data\Lion_Albedo.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\Sponza_Curtain_Green_diffuse.jpg" is loaded in 158.7112ms!
+[WARNING]: Unable to load options file data\Lion_Roughness.jpg.options for data\Lion_Roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Texture "data\\ChainTexture_Albedo.jpg" is loaded in 173.3618ms!
+[WARNING]: Unable to load options file data\Sponza_Roof_diffuse.jpg.options for data\Sponza_Roof_diffuse.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Shader StandardTwoSidesShader_GBuffer linked successfully!
+[INFO]: Texture "data\\Sponza_Curtain_Red_diffuse.jpg" is loaded in 183.3767ms!
+[WARNING]: Unable to load options file data\Sponza_Roof_roughness.jpg.options for data\Sponza_Roof_roughness.jpg resource, fallback to defaults! Reason: Io(Os { code: 2, kind: NotFound, message: "Не удается найти указанный файл." })
+[INFO]: Model "data/Sponza.fbx" is loaded!
+[INFO]: Shader StandardTwoSidesShader_Forward_VertexShader compiled successfully!
+[INFO]: Shader StandardTwoSidesShader_Forward_FragmentShader compiled successfully!
+[INFO]: Texture "data\\ChainTexture_Roughness.jpg" is loaded in 181.3333ms!
+[INFO]: Texture "data\\VaseHanging_diffuse.jpg" is loaded in 155.5259ms!
+[INFO]: Texture "data\\ChainTexture_Metallic.jpg" is loaded in 174.7763ms!
+[INFO]: Shader StandardTwoSidesShader_Forward linked successfully!
+[INFO]: Texture "data\\Vase_roughness.jpg" is loaded in 150.8612ms!
+[INFO]: Texture "data\\Vase_diffuse.jpg" is loaded in 152.2114ms!
+[INFO]: Shader StandardTwoSidesShader_DirectionalShadow_VertexShader compiled successfully!
+[INFO]: Shader StandardTwoSidesShader_DirectionalShadow_FragmentShader compiled successfully!
+[INFO]: Texture "data\\VaseHanging_roughness.jpg" is loaded in 167.8831ms!
+[INFO]: Texture "data\\Lion_Albedo.jpg" is loaded in 144.1875ms!
+[INFO]: Texture "data\\Lion_Roughness.jpg" is loaded in 119.536ms!
+[INFO]: Texture "data\\Sponza_Roof_diffuse.jpg" is loaded in 123.2383ms!
+[INFO]: Shader StandardTwoSidesShader_DirectionalShadow linked successfully!
+[INFO]: Shader StandardTwoSidesShader_SpotShadow_VertexShader compiled successfully!
+[INFO]: Shader StandardTwoSidesShader_SpotShadow_FragmentShader compiled successfully!
+[INFO]: Shader StandardTwoSidesShader_SpotShadow linked successfully!
+[INFO]: Shader StandardTwoSidesShader_PointShadow_VertexShader compiled successfully!
+[INFO]: Shader StandardTwoSidesShader_PointShadow_FragmentShader compiled successfully!
+[INFO]: Texture "data\\Sponza_Roof_roughness.jpg" is loaded in 121.9333ms!
+[INFO]: Shader StandardTwoSidesShader_PointShadow linked successfully!
+[INFO]: Shader BlurShader_VertexShader compiled successfully!
+[INFO]: Shader BlurShader_FragmentShader compiled successfully!
+[INFO]: Shader BlurShader linked successfully!
+[INFO]: Shader SsaoShader_VertexShader compiled successfully!
+[INFO]: Shader SsaoShader_FragmentShader compiled successfully!
+[INFO]: Shader SsaoShader linked successfully!
+[INFO]: Shader SpotLightShader_VertexShader compiled successfully!
+[INFO]: Sound buffer "data/age_of_mythology.ogg" is loaded!
+[INFO]: SceneLoader::finish() - All 8 resources have finished loading.
+[INFO]: Starting resolve...
+[INFO]: Resolving graph...
+[INFO]: Shader SpotLightShader_FragmentShader compiled successfully!
+[INFO]: Original handles resolved!
+[INFO]: Checking integrity...
+[INFO]: Integrity restored for 1 instances! 0 new nodes were added!
+[INFO]: Shader SpotLightShader linked successfully!
+[INFO]: Shader PointLightShader_VertexShader compiled successfully!
+[INFO]: Graph resolved successfully!
+[INFO]: Resolve succeeded!
+[INFO]: Shader PointLightShader_FragmentShader compiled successfully!
+[INFO]: Shader PointLightShader linked successfully!
+[INFO]: Shader DirectionalLightShader_VertexShader compiled successfully!
+[INFO]: Shader DirectionalLightShader_FragmentShader compiled successfully!
+[INFO]: Shader DirectionalLightShader linked successfully!
+[INFO]: Shader AmbientLightShader_VertexShader compiled successfully!
+[INFO]: Shader AmbientLightShader_FragmentShader compiled successfully!
+[INFO]: Shader AmbientLightShader linked successfully!
+[INFO]: Shader FlatShader_VertexShader compiled successfully!
+[INFO]: Shader FlatShader_FragmentShader compiled successfully!
+[INFO]: Shader FlatShader linked successfully!
+[INFO]: Shader SkyboxShader_VertexShader compiled successfully!
+[INFO]: Shader SkyboxShader_FragmentShader compiled successfully!
+[INFO]: Shader SkyboxShader linked successfully!
+[INFO]: Shader SpotVolumetricLight_VertexShader compiled successfully!
+[INFO]: Shader SpotVolumetricLight_FragmentShader compiled successfully!
+[INFO]: Shader SpotVolumetricLight linked successfully!
+[INFO]: Shader PointVolumetricLight_VertexShader compiled successfully!
+[INFO]: Shader PointVolumetricLight_FragmentShader compiled successfully!
+[INFO]: Shader PointVolumetricLight linked successfully!
+[INFO]: Shader FlatShader_VertexShader compiled successfully!
+[INFO]: Shader FlatShader_FragmentShader compiled successfully!
+[INFO]: Shader FlatShader linked successfully!
+[INFO]: Shader FlatShader_VertexShader compiled successfully!
+[INFO]: Shader FlatShader_FragmentShader compiled successfully!
+[INFO]: Shader FlatShader linked successfully!
+[INFO]: Shader SpriteShader_VertexShader compiled successfully!
+[INFO]: Shader SpriteShader_FragmentShader compiled successfully!
+[INFO]: Shader SpriteShader linked successfully!
+[INFO]: Shader UIShader_VertexShader compiled successfully!
+[INFO]: Shader UIShader_FragmentShader compiled successfully!
+[INFO]: Shader UIShader linked successfully!
+[INFO]: Shader ParticleSystemShader_VertexShader compiled successfully!
+[INFO]: Shader ParticleSystemShader_FragmentShader compiled successfully!
+[INFO]: Shader ParticleSystemShader linked successfully!
+[INFO]: Shader DebugShader_VertexShader compiled successfully!
+[INFO]: Shader DebugShader_FragmentShader compiled successfully!
+[INFO]: Shader DebugShader linked successfully!
+[INFO]: Shader FXAAShader_VertexShader compiled successfully!
+[INFO]: Shader FXAAShader_FragmentShader compiled successfully!
+[INFO]: Shader FXAAShader linked successfully!
+[INFO]: Shader RectangleShader_VertexShader compiled successfully!
+[INFO]: Shader RectangleShader_FragmentShader compiled successfully!
+[INFO]: Shader RectangleShader linked successfully!
+[INFO]: Shader BlurShader_VertexShader compiled successfully!
+[INFO]: Shader BlurShader_FragmentShader compiled successfully!
+[INFO]: Shader BlurShader linked successfully!
+[INFO]: Shader SsaoShader_VertexShader compiled successfully!
+[INFO]: Shader SsaoShader_FragmentShader compiled successfully!
+[INFO]: Shader SsaoShader linked successfully!
+[INFO]: Shader BlurShader_VertexShader compiled successfully!
+[INFO]: Shader BlurShader_FragmentShader compiled successfully!
+[INFO]: Shader BlurShader linked successfully!
+[INFO]: Shader SsaoShader_VertexShader compiled successfully!
+[INFO]: Shader SsaoShader_FragmentShader compiled successfully!
+[INFO]: Shader SsaoShader linked successfully!
+[INFO]: Shader BlurShader_VertexShader compiled successfully!
+[INFO]: Shader BlurShader_FragmentShader compiled successfully!
+[INFO]: Shader BlurShader linked successfully!
+[INFO]: Shader SsaoShader_VertexShader compiled successfully!
+[INFO]: Shader SsaoShader_FragmentShader compiled successfully!
+[INFO]: Shader SsaoShader linked successfully!
+[INFO]: Native sound source was created for node: Sound
+[INFO]: A new associated scene rendering data was created for scene 0:1!
+[INFO]: Shader DecalShader_VertexShader compiled successfully!
+[INFO]: Shader DecalShader_FragmentShader compiled successfully!
+[INFO]: Shader DecalShader linked successfully!
+[INFO]: Shader AdaptationShader_VertexShader compiled successfully!
+[INFO]: Shader AdaptationShader_FragmentShader compiled successfully!
+[INFO]: Shader AdaptationShader linked successfully!
+[INFO]: Shader LuminanceShader_VertexShader compiled successfully!
+[INFO]: Shader LuminanceShader_FragmentShader compiled successfully!
+[INFO]: Shader LuminanceShader linked successfully!
+[INFO]: Shader DownscaleShader_VertexShader compiled successfully!
+[INFO]: Shader DownscaleShader_FragmentShader compiled successfully!
+[INFO]: Shader DownscaleShader linked successfully!
+[INFO]: Shader HdrToLdrShader_VertexShader compiled successfully!
+[INFO]: Shader HdrToLdrShader_FragmentShader compiled successfully!
+[INFO]: Shader HdrToLdrShader linked successfully!
+[INFO]: Shader BloomShader_VertexShader compiled successfully!
+[INFO]: Shader BloomShader_FragmentShader compiled successfully!
+[INFO]: Shader BloomShader linked successfully!
+[INFO]: Shader GaussianBlurShader_VertexShader compiled successfully!
+[INFO]: Shader GaussianBlurShader_FragmentShader compiled successfully!
+[INFO]: Shader GaussianBlurShader linked successfully!
