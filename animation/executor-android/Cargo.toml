@@ -1,0 +1,18 @@
+
+[package]
+name = "executor-android"
+version = "0.1.0"
+edition = "2021"
+
+[package.metadata.android]
+assets = "../data"
+strip = "strip"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+animation = { path = "../game" }
+
+[dependencies.fyrox ]
+path = "../../../Fyrox"
