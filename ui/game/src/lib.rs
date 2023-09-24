@@ -53,6 +53,7 @@ use fyrox::{
     },
     plugin::{Plugin, PluginConstructor, PluginContext},
     rand::{thread_rng, Rng},
+    renderer::{CsmSettings, ShadowMapPrecision},
     resource::texture::Texture,
     scene::{loader::AsyncSceneLoader, node::Node, Scene},
     utils,
@@ -542,6 +543,10 @@ impl Interface {
             .renderer
             .get_quality_settings();
 
+        let container = PropertyEditorDefinitionContainer::new();
+        container.register_inheritable_inspectable::<CsmSettings>();
+        container.register_inheritable_enum::<ShadowMapPrecision, _>();
+
         // Create another window which will show some graphics options.
         let debug_text;
         let quality_inspector;
@@ -565,7 +570,7 @@ impl Interface {
                                     .with_context(InspectorContext::from_object(
                                         &quality_settings,
                                         ctx,
-                                        Rc::new(PropertyEditorDefinitionContainer::new()),
+                                        Rc::new(container),
                                         None,
                                         u64::MAX,
                                         0,
