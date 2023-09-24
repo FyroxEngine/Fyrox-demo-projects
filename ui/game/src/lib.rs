@@ -31,6 +31,7 @@ use fyrox::{
         },
         list_view::ListViewBuilder,
         message::{MessageDirection, UiMessage},
+        messagebox::{MessageBoxBuilder, MessageBoxButtons, MessageBoxMessage},
         numeric::NumericUpDownBuilder,
         path::PathEditorBuilder,
         range::RangeEditorBuilder,
@@ -45,6 +46,7 @@ use fyrox::{
         utils::make_simple_tooltip,
         vec::Vec3EditorBuilder,
         widget::WidgetBuilder,
+        widget::WidgetMessage,
         window::{WindowBuilder, WindowTitle},
         wrap_panel::WrapPanelBuilder,
         BuildContext, HorizontalAlignment, Orientation, Thickness, UiNode, VerticalAlignment,
@@ -161,7 +163,7 @@ impl Plugin for Game {
         message: &UiMessage,
         _control_flow: &mut ControlFlow,
     ) {
-        if let Some(interface) = self.interface.as_ref() {
+        if let Some(interface) = self.interface.as_mut() {
             if let Some(ScrollBarMessage::Value(value)) = message.data() {
                 if message.direction() == MessageDirection::FromWidget {
                     if let Some(paladin) = context
@@ -202,6 +204,24 @@ impl Plugin for Game {
                         MessageDirection::ToWidget,
                         180.0f32,
                     ));
+                } else if message.destination() == interface.press_me_button {
+                    interface.message_box = MessageBoxBuilder::new(
+                        WindowBuilder::new(
+                            WidgetBuilder::new().with_width(250.0).with_height(100.0),
+                        )
+                        .with_title(WindowTitle::text("Message Box Widget"))
+                        .open(false),
+                    )
+                    .with_text("Hello!")
+                    .with_buttons(MessageBoxButtons::Ok)
+                    .build(&mut context.user_interface.build_ctx());
+
+                    context.user_interface.send_message(MessageBoxMessage::open(
+                        interface.message_box,
+                        MessageDirection::ToWidget,
+                        None,
+                        None,
+                    ));
                 }
             } else if let Some(InspectorMessage::PropertyChanged(prop)) = message.data() {
                 if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
@@ -215,6 +235,13 @@ impl Plugin for Game {
                         Log::verify(graphics_context.renderer.set_quality_settings(&settings));
                     }
                 }
+            } else if let Some(MessageBoxMessage::Close(_)) = message.data() {
+                if message.destination() == interface.message_box {
+                    context.user_interface.send_message(WidgetMessage::remove(
+                        interface.message_box,
+                        MessageDirection::ToWidget,
+                    ));
+                }
             }
         }
     }
@@ -226,6 +253,8 @@ struct Interface {
     scale: Handle<UiNode>,
     reset: Handle<UiNode>,
     quality_inspector: Handle<UiNode>,
+    press_me_button: Handle<UiNode>,
+    message_box: Handle<UiNode>,
 }
 
 fn make_potions_images(
@@ -558,6 +587,7 @@ impl Interface {
         .can_close(false)
         .build(ctx);
 
+        let press_me_button;
         let controls_expander = ExpanderBuilder::new(WidgetBuilder::new())
             .with_header(
                 TextBuilder::new(WidgetBuilder::new())
@@ -569,8 +599,8 @@ impl Interface {
                 StackPanelBuilder::new(
                     WidgetBuilder::new()
                         .with_margin(Thickness::uniform(2.0))
-                        .with_child(
-                            ButtonBuilder::new(
+                        .with_child({
+                            press_me_button = ButtonBuilder::new(
                                 WidgetBuilder::new()
                                     .with_margin(Thickness::uniform(1.0))
                                     .with_tooltip(make_simple_tooltip(
@@ -579,8 +609,9 @@ impl Interface {
                                     )),
                             )
                             .with_text("Press Me!")
-                            .build(ctx),
-                        )
+                            .build(ctx);
+                            press_me_button
+                        })
                         .with_child(
                             CheckBoxBuilder::new(
                                 WidgetBuilder::new()
@@ -935,6 +966,8 @@ impl Interface {
             scale,
             reset,
             quality_inspector,
+            press_me_button,
+            message_box: Default::default(),
         }
     }
 }
