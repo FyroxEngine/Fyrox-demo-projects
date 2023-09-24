@@ -20,11 +20,15 @@ use fyrox::{
         curve::CurveEditorBuilder,
         decorator::DecoratorBuilder,
         dock::{DockingManagerBuilder, TileBuilder, TileContent},
-        dropdown_list::{DropdownListBuilder, DropdownListMessage},
+        dropdown_list::DropdownListBuilder,
         expander::ExpanderBuilder,
         formatted_text::WrapMode,
         grid::{Column, GridBuilder, Row},
         image::ImageBuilder,
+        inspector::{
+            editors::PropertyEditorDefinitionContainer, InspectorBuilder, InspectorContext,
+            InspectorMessage, PropertyAction,
+        },
         list_view::ListViewBuilder,
         message::{MessageDirection, UiMessage},
         numeric::NumericUpDownBuilder,
@@ -45,14 +49,13 @@ use fyrox::{
         wrap_panel::WrapPanelBuilder,
         BuildContext, HorizontalAlignment, Orientation, Thickness, UiNode, VerticalAlignment,
     },
-    monitor::VideoMode,
     plugin::{Plugin, PluginConstructor, PluginContext},
     rand::{thread_rng, Rng},
     resource::texture::Texture,
     scene::{loader::AsyncSceneLoader, node::Node, Scene},
     utils,
-    window::Fullscreen,
 };
+use std::rc::Rc;
 
 pub struct GameConstructor;
 
@@ -200,14 +203,16 @@ impl Plugin for Game {
                         180.0f32,
                     ));
                 }
-            } else if let Some(DropdownListMessage::SelectionChanged(Some(idx))) = message.data() {
-                // Video mode has changed and we must change video mode to what user wants.
-                if message.destination() == interface.resolutions {
-                    let video_mode = interface.video_modes.get(*idx).unwrap();
-
-                    if let GraphicsContext::Initialized(ref ctx) = context.graphics_context {
-                        ctx.window
-                            .set_fullscreen(Some(Fullscreen::Exclusive(video_mode.clone())));
+            } else if let Some(InspectorMessage::PropertyChanged(prop)) = message.data() {
+                if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
+                    if message.destination() == interface.quality_inspector {
+                        let mut settings = graphics_context.renderer.get_quality_settings();
+                        PropertyAction::from_field_kind(&prop.value).apply(
+                            &prop.path(),
+                            &mut settings,
+                            &mut |e| Log::verify(e),
+                        );
+                        Log::verify(graphics_context.renderer.set_quality_settings(&settings));
                     }
                 }
             }
@@ -220,8 +225,7 @@ struct Interface {
     yaw: Handle<UiNode>,
     scale: Handle<UiNode>,
     reset: Handle<UiNode>,
-    video_modes: Vec<VideoMode>,
-    resolutions: Handle<UiNode>,
+    quality_inspector: Handle<UiNode>,
 }
 
 fn make_potions_images(
@@ -396,19 +400,6 @@ impl Interface {
         let ctx = plugin_ctx.graphics_context.as_initialized_ref();
         let window_width = ctx.renderer.get_frame_size().0 as f32;
 
-        // Gather all suitable video modes, we'll use them to fill combo box of
-        // available resolutions.
-        let video_modes = ctx
-            .window
-            .primary_monitor()
-            .unwrap()
-            .video_modes()
-            .filter(|vm| {
-                // Leave only modern video modes, we are not in 1998.
-                vm.size().width > 800 && vm.size().height > 600 && vm.bit_depth() == 32
-            })
-            .collect::<Vec<_>>();
-
         let ctx = &mut plugin_ctx.user_interface.build_ctx();
 
         let yaw;
@@ -428,6 +419,7 @@ impl Interface {
                             WidgetBuilder::new()
                                 .on_row(0)
                                 .on_column(0)
+                                .with_margin(Thickness::uniform(1.0))
                                 .with_vertical_alignment(VerticalAlignment::Center),
                         )
                         .with_text("Yaw")
@@ -460,6 +452,7 @@ impl Interface {
                             WidgetBuilder::new()
                                 .on_row(1)
                                 .on_column(0)
+                                .with_margin(Thickness::uniform(1.0))
                                 .with_vertical_alignment(VerticalAlignment::Center),
                         )
                         .with_wrap(WrapMode::Word)
@@ -488,10 +481,13 @@ impl Interface {
                                 .on_column(1)
                                 .with_horizontal_alignment(HorizontalAlignment::Right)
                                 .with_child({
-                                    reset =
-                                        ButtonBuilder::new(WidgetBuilder::new().with_width(100.0))
-                                            .with_text("Reset")
-                                            .build(ctx);
+                                    reset = ButtonBuilder::new(
+                                        WidgetBuilder::new()
+                                            .with_width(100.0)
+                                            .with_margin(Thickness::uniform(1.0)),
+                                    )
+                                    .with_text("Reset")
+                                    .build(ctx);
                                     reset
                                 }),
                         )
@@ -511,9 +507,15 @@ impl Interface {
         .can_close(false)
         .build(ctx);
 
+        let quality_settings = plugin_ctx
+            .graphics_context
+            .as_initialized_ref()
+            .renderer
+            .get_quality_settings();
+
         // Create another window which will show some graphics options.
-        let resolutions;
         let debug_text;
+        let quality_inspector;
         let graphics = WindowBuilder::new(
             WidgetBuilder::new()
                 .with_desired_position(Vector2::new(window_width - 670.0, 0.0))
@@ -528,54 +530,28 @@ impl Interface {
                         debug_text
                     })
                     .with_child(
-                        TextBuilder::new(
-                            WidgetBuilder::new()
-                                .on_column(0)
-                                .on_row(1)
-                                .with_vertical_alignment(VerticalAlignment::Center),
-                        )
-                        .with_text("Resolution")
-                        .build(ctx),
-                    )
-                    .with_child({
-                        resolutions =
-                            DropdownListBuilder::new(WidgetBuilder::new().on_row(1).on_column(1))
-                                // Set combo box items - each item will represent video mode value.
-                                // When user will select something, we'll receive SelectionChanged
-                                // message and will use received index to switch to desired video
-                                // mode.
-                                .with_items({
-                                    let mut items = Vec::new();
-                                    for video_mode in video_modes.iter() {
-                                        let size = video_mode.size();
-                                        let rate = video_mode.refresh_rate_millihertz() / 1000;
-                                        let item = DecoratorBuilder::new(BorderBuilder::new(
-                                            WidgetBuilder::new().with_height(28.0).with_child(
-                                                TextBuilder::new(
-                                                    WidgetBuilder::new().with_horizontal_alignment(
-                                                        HorizontalAlignment::Center,
-                                                    ),
-                                                )
-                                                .with_text(format!(
-                                                    "{}x{}@{}Hz",
-                                                    size.width, size.height, rate
-                                                ))
-                                                .build(ctx),
-                                            ),
-                                        ))
-                                        .build(ctx);
-                                        items.push(item);
-                                    }
-                                    items
-                                })
-                                .build(ctx);
-                        resolutions
-                    }),
+                        ScrollViewerBuilder::new(WidgetBuilder::new().on_row(1))
+                            .with_content({
+                                quality_inspector = InspectorBuilder::new(WidgetBuilder::new())
+                                    .with_context(InspectorContext::from_object(
+                                        &quality_settings,
+                                        ctx,
+                                        Rc::new(PropertyEditorDefinitionContainer::new()),
+                                        None,
+                                        u64::MAX,
+                                        0,
+                                        true,
+                                        Default::default(),
+                                    ))
+                                    .build(ctx);
+                                quality_inspector
+                            })
+                            .build(ctx),
+                    ),
             )
-            .add_column(Column::strict(120.0))
+            .add_row(Row::auto())
+            .add_row(Row::stretch())
             .add_column(Column::stretch())
-            .add_row(Row::strict(30.0))
-            .add_row(Row::strict(30.0))
             .build(ctx),
         )
         .with_title(WindowTitle::text("Graphics Options"))
@@ -958,8 +934,7 @@ impl Interface {
             yaw,
             scale,
             reset,
-            resolutions,
-            video_modes,
+            quality_inspector,
         }
     }
 }
