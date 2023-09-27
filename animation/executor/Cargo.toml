@@ -8,4 +8,4 @@ edition = "2021"
 animation = { path = "../game" }
 
 [dependencies.fyrox ]
-path = "../../../Fyrox"
+workspace = true

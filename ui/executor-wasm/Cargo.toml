@@ -11,4 +11,4 @@ crate-type = ["cdylib", "rlib"]
 ui = { path = "../game" }
 
 [dependencies.fyrox ]
-git = "https://github.com/FyroxEngine/Fyrox"
+workspace = true

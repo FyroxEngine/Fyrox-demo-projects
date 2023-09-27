@@ -15,4 +15,4 @@ crate-type = ["cdylib"]
 blendshape = { path = "../game" }
 
 [dependencies.fyrox ]
-git = "https://github.com/FyroxEngine/Fyrox"
+workspace = true

@@ -7,4 +7,4 @@ edition = "2021"
 [dependencies]
 
 [dependencies.fyrox ]
-git = "https://github.com/FyroxEngine/Fyrox"
+workspace = true

@@ -8,7 +8,7 @@ edition = "2021"
 ui = { path = "../game" }
 
 [dependencies.fyrox ]
-git = "https://github.com/FyroxEngine/Fyrox"
+workspace = true
 
 [dependencies.fyroxed_base ]
-git = "https://github.com/FyroxEngine/Fyrox"
+workspace = true
