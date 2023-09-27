@@ -1,5 +1,4 @@
 //! Game project.
-use crate::camera_controller::CameraController;
 use fyrox::{
     core::{algebra::Vector2, log::Log, pool::Handle},
     engine::GraphicsContext,
@@ -20,16 +19,11 @@ use fyrox::{
     scene::{loader::AsyncSceneLoader, Scene},
 };
 
-mod camera_controller;
-
 pub struct GameConstructor;
 
 impl PluginConstructor for GameConstructor {
     fn register(&self, context: PluginRegistrationContext) {
-        context
-            .serialization_context
-            .script_constructors
-            .add::<CameraController>("Camera Controller");
+        fyrox_scripts::register(&context.serialization_context.script_constructors);
     }
 
     fn create_instance(

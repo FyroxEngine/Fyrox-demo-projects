@@ -5,6 +5,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+fyrox-scripts = { git = "https://github.com/FyroxEngine/Fyrox" }
 
 [dependencies.fyrox ]
 git = "https://github.com/FyroxEngine/Fyrox"
