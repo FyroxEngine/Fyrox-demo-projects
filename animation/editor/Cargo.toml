@@ -8,7 +8,7 @@ edition = "2021"
 animation = { path = "../game" }
 
 [dependencies.fyrox ]
-path = "../../../Fyrox"
+workspace = true
 
 [dependencies.fyroxed_base ]
-path = "../../../Fyrox/editor"
+workspace = true

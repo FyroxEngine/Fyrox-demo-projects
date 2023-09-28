@@ -13,3 +13,8 @@ opt-level = 3
 
 [profile.release]
 debug = true
+
+[workspace.dependencies.fyrox]
+git = "https://github.com/FyroxEngine/Fyrox"
+[workspace.dependencies.fyroxed_base]
+git = "https://github.com/FyroxEngine/Fyrox"

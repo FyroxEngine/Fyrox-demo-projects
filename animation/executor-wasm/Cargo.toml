@@ -11,4 +11,4 @@ crate-type = ["cdylib", "rlib"]
 animation = { path = "../game" }
 
 [dependencies.fyrox ]
-path = "../../../Fyrox"
+workspace = true

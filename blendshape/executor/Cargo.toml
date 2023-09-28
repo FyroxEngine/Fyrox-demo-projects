@@ -8,4 +8,4 @@ edition = "2021"
 blendshape = { path = "../game" }
 
 [dependencies.fyrox ]
-git = "https://github.com/FyroxEngine/Fyrox"
+workspace = true
