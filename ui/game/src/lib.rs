@@ -604,19 +604,83 @@ impl Interface {
                 StackPanelBuilder::new(
                     WidgetBuilder::new()
                         .with_margin(Thickness::uniform(2.0))
-                        .with_child({
-                            press_me_button = ButtonBuilder::new(
+                        .with_child(
+                            GridBuilder::new(
                                 WidgetBuilder::new()
-                                    .with_margin(Thickness::uniform(1.0))
-                                    .with_tooltip(make_simple_tooltip(
-                                        ctx,
-                                        "Button - a simplest clickable widget",
-                                    )),
+                                    .with_child({
+                                        press_me_button = ButtonBuilder::new(
+                                            WidgetBuilder::new()
+                                                .on_column(0)
+                                                .with_margin(Thickness::uniform(1.0))
+                                                .with_tooltip(make_simple_tooltip(
+                                                    ctx,
+                                                    "Button - a simplest clickable widget",
+                                                )),
+                                        )
+                                        .with_text("Press Me!")
+                                        .build(ctx);
+                                        press_me_button
+                                    })
+                                    .with_child(
+                                        ButtonBuilder::new(
+                                            WidgetBuilder::new()
+                                                .on_column(1)
+                                                .with_margin(Thickness::uniform(1.0))
+                                                .with_tooltip(make_simple_tooltip(
+                                                    ctx,
+                                                    "Button with custom content.",
+                                                )),
+                                        )
+                                        .with_content(
+                                            GridBuilder::new(
+                                                WidgetBuilder::new()
+                                                    .with_margin(Thickness::uniform(2.0))
+                                                    .with_horizontal_alignment(
+                                                        HorizontalAlignment::Center,
+                                                    )
+                                                    .with_child(
+                                                        ImageBuilder::new(
+                                                            WidgetBuilder::new()
+                                                                .on_column(0)
+                                                                .with_width(20.0)
+                                                                .with_height(20.0),
+                                                        )
+                                                        .with_texture(utils::into_gui_texture(
+                                                            plugin_ctx
+                                                                .resource_manager
+                                                                .request::<Texture, _>(
+                                                                    "data/Potions.png",
+                                                                ),
+                                                        ))
+                                                        .with_uv_rect(Rect::new(
+                                                            4.0 / 6.0,
+                                                            0.0,
+                                                            1.0 / 6.0,
+                                                            1.0 / 3.0,
+                                                        ))
+                                                        .build(ctx),
+                                                    )
+                                                    .with_child(
+                                                        TextBuilder::new(
+                                                            WidgetBuilder::new().on_column(1),
+                                                        )
+                                                        .with_text("Drink Potion")
+                                                        .build(ctx),
+                                                    ),
+                                            )
+                                            .add_column(Column::auto())
+                                            .add_column(Column::auto())
+                                            .add_row(Row::stretch())
+                                            .build(ctx),
+                                        )
+                                        .build(ctx),
+                                    ),
                             )
-                            .with_text("Press Me!")
-                            .build(ctx);
-                            press_me_button
-                        })
+                            .add_row(Row::stretch())
+                            .add_column(Column::stretch())
+                            .add_column(Column::stretch())
+                            .build(ctx),
+                        )
                         .with_child(
                             CheckBoxBuilder::new(
                                 WidgetBuilder::new()
