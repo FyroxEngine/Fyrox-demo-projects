@@ -18,3 +18,5 @@ debug = true
 git = "https://github.com/FyroxEngine/Fyrox"
 [workspace.dependencies.fyroxed_base]
 git = "https://github.com/FyroxEngine/Fyrox"
+[workspace.dependencies.fyrox-scripts]
+git = "https://github.com/FyroxEngine/Fyrox"

@@ -6,7 +6,7 @@ use fyrox::{
     event_loop::ControlFlow,
     gui::{
         grid::{Column, GridBuilder, Row},
-        message::{MessageDirection, UiMessage},
+        message::MessageDirection,
         progress_bar::{ProgressBarBuilder, ProgressBarMessage},
         stack_panel::StackPanelBuilder,
         text::{TextBuilder, TextMessage},
@@ -16,8 +16,9 @@ use fyrox::{
     plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
     renderer::QualitySettings,
     resource::texture::{loader::TextureLoader, CompressionOptions, TextureImportOptions},
-    scene::{loader::AsyncSceneLoader, Scene},
+    scene::Scene,
 };
+use std::path::Path;
 
 pub struct GameConstructor;
 
@@ -26,25 +27,20 @@ impl PluginConstructor for GameConstructor {
         fyrox_scripts::register(&context.serialization_context.script_constructors);
     }
 
-    fn create_instance(
-        &self,
-        override_scene: Handle<Scene>,
-        context: PluginContext,
-    ) -> Box<dyn Plugin> {
-        Box::new(Game::new(override_scene, context))
+    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
+        Box::new(Game::new(scene_path, context))
     }
 }
 
 pub struct Game {
     scene: Handle<Scene>,
-    loader: Option<AsyncSceneLoader>,
     progress_bar: Handle<UiNode>,
     overlay_grid: Handle<UiNode>,
     debug_text: Handle<UiNode>,
 }
 
 impl Game {
-    pub fn new(override_scene: Handle<Scene>, context: PluginContext) -> Self {
+    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
         context
             .resource_manager
             .state()
@@ -55,17 +51,9 @@ impl Game {
             .with_anisotropy(1.0)
             .with_compression(CompressionOptions::Quality);
 
-        let mut loader = None;
-        let scene = if override_scene.is_some() {
-            override_scene
-        } else {
-            loader = Some(AsyncSceneLoader::begin_loading(
-                "data/scene.rgs".into(),
-                context.serialization_context.clone(),
-                context.resource_manager.clone(),
-            ));
-            Default::default()
-        };
+        context
+            .async_scene_loader
+            .request(scene_path.unwrap_or("data/scene.rgs"));
 
         let ctx = &mut context.user_interface.build_ctx();
         let progress_bar;
@@ -106,8 +94,7 @@ impl Game {
         let debug_text = TextBuilder::new(WidgetBuilder::new()).build(ctx);
 
         Self {
-            scene,
-            loader,
+            scene: Handle::NONE,
             progress_bar,
             overlay_grid,
             debug_text,
@@ -130,25 +117,6 @@ impl Game {
 
 impl Plugin for Game {
     fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
-        if let Some(loader) = self.loader.as_ref() {
-            if let Some(result) = loader.fetch_result() {
-                match result {
-                    Ok(scene) => {
-                        self.scene = context.scenes.add(scene);
-
-                        context
-                            .user_interface
-                            .send_message(WidgetMessage::visibility(
-                                self.overlay_grid,
-                                MessageDirection::ToWidget,
-                                false,
-                            ));
-                    }
-                    Err(err) => Log::err(err),
-                }
-            }
-        }
-
         let progress = context.resource_manager.state().loading_progress() as f32 / 100.0;
         context
             .user_interface
@@ -206,12 +174,15 @@ impl Plugin for Game {
         );
     }
 
-    fn on_ui_message(
-        &mut self,
-        _context: &mut PluginContext,
-        _message: &UiMessage,
-        _control_flow: &mut ControlFlow,
-    ) {
-        // Handle UI events here.
+    fn on_scene_loaded(&mut self, _path: &Path, scene: Handle<Scene>, context: &mut PluginContext) {
+        self.scene = scene;
+
+        context
+            .user_interface
+            .send_message(WidgetMessage::visibility(
+                self.overlay_grid,
+                MessageDirection::ToWidget,
+                false,
+            ));
     }
 }

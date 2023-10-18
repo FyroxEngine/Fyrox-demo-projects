@@ -1,5 +1,4 @@
 //! Game project.
-use std::path::Path;
 use crate::player::Player;
 use fyrox::{
     core::{algebra::Vector2, log::Log, pool::Handle},
@@ -18,8 +17,9 @@ use fyrox::{
     plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
     renderer::QualitySettings,
     resource::texture::{loader::TextureLoader, CompressionOptions, TextureImportOptions},
-    scene::{Scene},
+    scene::Scene,
 };
+use std::path::Path;
 
 mod player;
 
@@ -33,12 +33,8 @@ impl PluginConstructor for GameConstructor {
             .add::<Player>("Player");
     }
 
-    fn create_instance(
-        &self,
-        has_scene: bool,
-        context: PluginContext,
-    ) -> Box<dyn Plugin> {
-        Box::new(Game::new( has_scene, context))
+    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
+        Box::new(Game::new(scene_path, context))
     }
 }
 
@@ -50,7 +46,7 @@ pub struct Game {
 }
 
 impl Game {
-    pub fn new( has_scene:bool, context: PluginContext) -> Self {
+    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
         context
             .resource_manager
             .state()
@@ -61,9 +57,9 @@ impl Game {
             .with_anisotropy(1.0)
             .with_compression(CompressionOptions::Quality);
 
-        if !has_scene {
-            context.async_scene_loader.request("data/scene.rgs");
-        }
+        context
+            .async_scene_loader
+            .request(scene_path.unwrap_or("data/scene.rgs"));
 
         let ctx = &mut context.user_interface.build_ctx();
         let progress_bar;

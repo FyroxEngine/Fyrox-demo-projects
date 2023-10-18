@@ -8,3 +8,6 @@ edition = "2021"
 
 [dependencies.fyrox ]
 workspace = true
+
+[dependencies.fyrox-scripts ]
+workspace = true

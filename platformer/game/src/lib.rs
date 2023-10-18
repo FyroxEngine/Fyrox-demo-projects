@@ -3,7 +3,6 @@ use fyrox::{
     animation::spritesheet::SpriteSheetAnimation,
     core::{
         algebra::{Vector2, Vector3},
-        log::Log,
         pool::Handle,
         reflect::prelude::*,
         uuid::{uuid, Uuid},
@@ -24,12 +23,12 @@ use fyrox::{
     plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
     scene::{
         dim2::{rectangle::Rectangle, rigidbody::RigidBody},
-        loader::AsyncSceneLoader,
         node::Node,
         Scene,
     },
     script::{ScriptContext, ScriptTrait},
 };
+use std::path::Path;
 
 pub struct GameConstructor;
 
@@ -46,41 +45,27 @@ impl PluginConstructor for GameConstructor {
         script_constructors.add::<Player>("Player");
     }
 
-    fn create_instance(
-        &self,
-        override_scene: Handle<Scene>,
-        context: PluginContext,
-    ) -> Box<dyn Plugin> {
-        Box::new(Game::new(override_scene, context))
+    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
+        Box::new(Game::new(scene_path, context))
     }
 }
 
 pub struct Game {
     scene: Handle<Scene>,
-    loader: Option<AsyncSceneLoader>,
     debug_text: Handle<UiNode>,
 }
 
 impl Game {
-    pub fn new(override_scene: Handle<Scene>, context: PluginContext) -> Self {
-        let mut loader = None;
-        let scene = if override_scene.is_some() {
-            override_scene
-        } else {
-            loader = Some(AsyncSceneLoader::begin_loading(
-                "data/scene.rgs".into(),
-                context.serialization_context.clone(),
-                context.resource_manager.clone(),
-            ));
-            Default::default()
-        };
+    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
+        context
+            .async_scene_loader
+            .request(scene_path.unwrap_or("data/scene.rgs"));
 
         let debug_text =
             TextBuilder::new(WidgetBuilder::new()).build(&mut context.user_interface.build_ctx());
 
         Self {
-            scene,
-            loader,
+            scene: Handle::NONE,
             debug_text,
         }
     }
@@ -88,17 +73,6 @@ impl Game {
 
 impl Plugin for Game {
     fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
-        if let Some(loader) = self.loader.as_ref() {
-            if let Some(result) = loader.fetch_result() {
-                match result {
-                    Ok(scene) => {
-                        self.scene = context.scenes.add(scene);
-                    }
-                    Err(err) => Log::err(err),
-                }
-            }
-        }
-
         if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
             context.user_interface.send_message(TextMessage::text(
                 self.debug_text,
@@ -106,6 +80,15 @@ impl Plugin for Game {
                 format!("{}", graphics_context.renderer.get_statistics()),
             ));
         }
+    }
+
+    fn on_scene_loaded(
+        &mut self,
+        _path: &Path,
+        scene: Handle<Scene>,
+        _context: &mut PluginContext,
+    ) {
+        self.scene = scene;
     }
 }
 

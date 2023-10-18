@@ -55,47 +55,34 @@ use fyrox::{
     rand::{thread_rng, Rng},
     renderer::{CsmSettings, ShadowMapPrecision},
     resource::texture::Texture,
-    scene::{loader::AsyncSceneLoader, node::Node, Scene},
+    scene::{node::Node, Scene},
     utils,
 };
+use std::path::Path;
 use std::rc::Rc;
 
 pub struct GameConstructor;
 
 impl PluginConstructor for GameConstructor {
-    fn create_instance(
-        &self,
-        override_scene: Handle<Scene>,
-        context: PluginContext,
-    ) -> Box<dyn Plugin> {
-        Box::new(Game::new(override_scene, context))
+    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
+        Box::new(Game::new(scene_path, context))
     }
 }
 
 pub struct Game {
     scene: Handle<Scene>,
-    loader: Option<AsyncSceneLoader>,
     interface: Option<Interface>,
     paladin: Handle<Node>,
 }
 
 impl Game {
-    pub fn new(override_scene: Handle<Scene>, context: PluginContext) -> Self {
-        let mut loader = None;
-        let scene = if override_scene.is_some() {
-            override_scene
-        } else {
-            loader = Some(AsyncSceneLoader::begin_loading(
-                "data/scene.rgs".into(),
-                context.serialization_context.clone(),
-                context.resource_manager.clone(),
-            ));
-            Default::default()
-        };
+    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
+        context
+            .async_scene_loader
+            .request(scene_path.unwrap_or("data/scene.rgs"));
 
         Self {
-            scene,
-            loader,
+            scene: Handle::NONE,
             interface: None,
             paladin: Default::default(),
         }
@@ -104,41 +91,6 @@ impl Game {
 
 impl Plugin for Game {
     fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
-        if let Some(loader) = self.loader.as_ref() {
-            if let Some(result) = loader.fetch_result() {
-                match result {
-                    Ok(scene) => {
-                        if let Some((handle, paladin)) =
-                            scene.graph.find_by_name_from_root("paladin.fbx")
-                        {
-                            if let Some(interface) = self.interface.as_ref() {
-                                context.user_interface.send_message(ScrollBarMessage::value(
-                                    interface.yaw,
-                                    MessageDirection::ToWidget,
-                                    paladin
-                                        .local_transform()
-                                        .rotation()
-                                        .euler_angles()
-                                        .2
-                                        .to_degrees(),
-                                ));
-
-                                context.user_interface.send_message(ScrollBarMessage::value(
-                                    interface.scale,
-                                    MessageDirection::ToWidget,
-                                    paladin.local_transform().scale().x,
-                                ));
-                            }
-
-                            self.paladin = handle;
-                        }
-
-                        self.scene = context.scenes.add(scene);
-                    }
-                    Err(err) => Log::err(err),
-                }
-            }
-        }
         if let Some(interface) = self.interface.as_ref() {
             if let GraphicsContext::Initialized(ctx) = context.graphics_context {
                 context.user_interface.send_message(TextMessage::text(
@@ -244,6 +196,34 @@ impl Plugin for Game {
                     ));
                 }
             }
+        }
+    }
+
+    fn on_scene_loaded(&mut self, _path: &Path, scene: Handle<Scene>, context: &mut PluginContext) {
+        self.scene = scene;
+
+        let scene_ref = &mut context.scenes[scene];
+        if let Some((handle, paladin)) = scene_ref.graph.find_by_name_from_root("paladin.fbx") {
+            if let Some(interface) = self.interface.as_ref() {
+                context.user_interface.send_message(ScrollBarMessage::value(
+                    interface.yaw,
+                    MessageDirection::ToWidget,
+                    paladin
+                        .local_transform()
+                        .rotation()
+                        .euler_angles()
+                        .2
+                        .to_degrees(),
+                ));
+
+                context.user_interface.send_message(ScrollBarMessage::value(
+                    interface.scale,
+                    MessageDirection::ToWidget,
+                    paladin.local_transform().scale().x,
+                ));
+            }
+
+            self.paladin = handle;
         }
     }
 }

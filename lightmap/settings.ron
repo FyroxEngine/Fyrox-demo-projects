@@ -10,11 +10,13 @@
             point_shadows_enabled: true,
             point_shadows_distance: 15.0,
             point_shadow_map_precision: Full,
+            point_shadows_fade_out_range: 1.0,
             spot_shadow_map_size: 1024,
             spot_soft_shadows: true,
             spot_shadows_enabled: true,
             spot_shadows_distance: 15.0,
             spot_shadow_map_precision: Full,
+            spot_shadows_fade_out_range: 1.0,
             csm_settings: (
                 enabled: true,
                 size: 2048,
@@ -43,7 +45,7 @@
         show_light_bounds: true,
         show_camera_bounds: true,
         pictogram_size: 0.33,
-        save_scene_in_text_form: true,
+        save_scene_in_text_form: false,
     ),
     move_mode_settings: (
         grid_snapping: false,
@@ -64,14 +66,11 @@
         speed: 10.0,
         invert_dragging: false,
         drag_speed: 0.01,
-        zoom_speed: 1.0,
-        camera_settings: {
-            "data/Sponza.rgs": (
-                position: (-13.304961, 11.512686, -7.6752415),
-                yaw: -4.760011,
-                pitch: 0.55999887,
-            ),
-        },
+        zoom_speed: 0.5,
+        zoom_range: (
+            start: 0.0,
+            end: 100.0,
+        ),
     ),
     navmesh: (
         draw_all: true,
@@ -230,15 +229,115 @@
                 system: false,
             ),
         ),
+        terrain_key_bindings: (
+            modify_height_map_mode: Some(
+                code: F1,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            draw_on_mask_mode: Some(
+                code: F2,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            flatten_slopes_mode: Some(
+                code: F3,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            increase_brush_size: Some(
+                code: BracketRight,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            decrease_brush_size: Some(
+                code: BracketLeft,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            increase_brush_opacity: Some(
+                code: Period,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            decrease_brush_opacity: Some(
+                code: Comma,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            prev_layer: Some(
+                code: Semicolon,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+            next_layer: Some(
+                code: Quote,
+                modifiers: (
+                    alt: false,
+                    shift: false,
+                    control: false,
+                    system: false,
+                ),
+            ),
+        ),
     ),
+    scene_settings: {
+        "data/Sponza.rgs": (
+            camera_settings: (
+                position: (-2.3504205, 5.434616, -5.419357),
+                yaw: -7.799997,
+                pitch: 0.4599999,
+            ),
+            node_infos: {
+                (
+                    index: 413,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+            },
+        ),
+    },
     recent: (
         scenes: [
             "data/Sponza.rgs",
         ],
     ),
     windows: (
-        window_position: (6.0, 4.0),
-        window_size: (1920.0, 1017.0),
+        window_position: (0.0, 0.0),
+        window_size: (2560.0, 1377.0),
         layout: None,
     ),
 )
