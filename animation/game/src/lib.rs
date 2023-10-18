@@ -1,4 +1,5 @@
 //! Game project.
+use std::path::Path;
 use crate::player::Player;
 use fyrox::{
     core::{algebra::Vector2, log::Log, pool::Handle},
@@ -17,7 +18,7 @@ use fyrox::{
     plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
     renderer::QualitySettings,
     resource::texture::{loader::TextureLoader, CompressionOptions, TextureImportOptions},
-    scene::{loader::AsyncSceneLoader, Scene},
+    scene::{Scene},
 };
 
 mod player;
@@ -34,23 +35,22 @@ impl PluginConstructor for GameConstructor {
 
     fn create_instance(
         &self,
-        override_scene: Handle<Scene>,
+        has_scene: bool,
         context: PluginContext,
     ) -> Box<dyn Plugin> {
-        Box::new(Game::new(override_scene, context))
+        Box::new(Game::new( has_scene, context))
     }
 }
 
 pub struct Game {
     scene: Handle<Scene>,
-    loader: Option<AsyncSceneLoader>,
     progress_bar: Handle<UiNode>,
     overlay_grid: Handle<UiNode>,
     debug_text: Handle<UiNode>,
 }
 
 impl Game {
-    pub fn new(override_scene: Handle<Scene>, context: PluginContext) -> Self {
+    pub fn new( has_scene:bool, context: PluginContext) -> Self {
         context
             .resource_manager
             .state()
@@ -61,17 +61,9 @@ impl Game {
             .with_anisotropy(1.0)
             .with_compression(CompressionOptions::Quality);
 
-        let mut loader = None;
-        let scene = if override_scene.is_some() {
-            override_scene
-        } else {
-            loader = Some(AsyncSceneLoader::begin_loading(
-                "data/scene.rgs".into(),
-                context.serialization_context.clone(),
-                context.resource_manager.clone(),
-            ));
-            Default::default()
-        };
+        if !has_scene {
+            context.async_scene_loader.request("data/scene.rgs");
+        }
 
         let ctx = &mut context.user_interface.build_ctx();
         let progress_bar;
@@ -112,8 +104,7 @@ impl Game {
         let debug_text = TextBuilder::new(WidgetBuilder::new()).build(ctx);
 
         Self {
-            scene,
-            loader,
+            scene: Handle::NONE,
             progress_bar,
             overlay_grid,
             debug_text,
@@ -136,25 +127,6 @@ impl Game {
 
 impl Plugin for Game {
     fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
-        if let Some(loader) = self.loader.as_ref() {
-            if let Some(result) = loader.fetch_result() {
-                match result {
-                    Ok(scene) => {
-                        self.scene = context.scenes.add(scene);
-
-                        context
-                            .user_interface
-                            .send_message(WidgetMessage::visibility(
-                                self.overlay_grid,
-                                MessageDirection::ToWidget,
-                                false,
-                            ));
-                    }
-                    Err(err) => Log::err(err),
-                }
-            }
-        }
-
         let progress = context.resource_manager.state().loading_progress() as f32 / 100.0;
         context
             .user_interface
@@ -215,5 +187,17 @@ impl Plugin for Game {
             &mut context,
             Vector2::new(inner_size.width as f32, inner_size.height as f32),
         );
+    }
+
+    fn on_scene_loaded(&mut self, _path: &Path, scene: Handle<Scene>, context: &mut PluginContext) {
+        self.scene = scene;
+
+        context
+            .user_interface
+            .send_message(WidgetMessage::visibility(
+                self.overlay_grid,
+                MessageDirection::ToWidget,
+                false,
+            ));
     }
 }
