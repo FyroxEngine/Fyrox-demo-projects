@@ -1,4 +1,5 @@
 //! Game project.
+use fyrox::keyboard::PhysicalKey;
 use fyrox::{
     core::{
         algebra::{UnitQuaternion, Vector2, Vector3},
@@ -6,7 +7,6 @@ use fyrox::{
     },
     engine::GraphicsContext,
     event::{ElementState, Event, WindowEvent},
-    event_loop::ControlFlow,
     gui::{
         grid::{Column, GridBuilder, Row},
         message::{MessageDirection, UiMessage},
@@ -67,7 +67,7 @@ impl Game {
 }
 
 impl Plugin for Game {
-    fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
+    fn update(&mut self, context: &mut PluginContext) {
         if let Some(scene) = context.scenes.try_get_mut(self.scene) {
             // Rotate model according to input controller state
             if self.input_controller.rotate_left {
@@ -96,35 +96,27 @@ impl Plugin for Game {
         }
     }
 
-    fn on_os_event(
-        &mut self,
-        event: &Event<()>,
-        _context: PluginContext,
-        _control_flow: &mut ControlFlow,
-    ) {
+    fn on_os_event(&mut self, event: &Event<()>, _context: PluginContext) {
         if let Event::WindowEvent {
             event: WindowEvent::KeyboardInput { event: input, .. },
             ..
         } = event
         {
-            match input.physical_key {
-                KeyCode::KeyA => {
-                    self.input_controller.rotate_left = input.state == ElementState::Pressed
+            if let PhysicalKey::Code(code) = input.physical_key {
+                match code {
+                    KeyCode::KeyA => {
+                        self.input_controller.rotate_left = input.state == ElementState::Pressed
+                    }
+                    KeyCode::KeyD => {
+                        self.input_controller.rotate_right = input.state == ElementState::Pressed
+                    }
+                    _ => (),
                 }
-                KeyCode::KeyD => {
-                    self.input_controller.rotate_right = input.state == ElementState::Pressed
-                }
-                _ => (),
             }
         }
     }
 
-    fn on_ui_message(
-        &mut self,
-        context: &mut PluginContext,
-        message: &UiMessage,
-        _control_flow: &mut ControlFlow,
-    ) {
+    fn on_ui_message(&mut self, context: &mut PluginContext, message: &UiMessage) {
         if let Some(ScrollBarMessage::Value(value)) = message.data() {
             if message.direction() == MessageDirection::FromWidget {
                 for (name, slider) in self.sliders.iter() {
@@ -146,7 +138,13 @@ impl Plugin for Game {
         }
     }
 
-    fn on_scene_loaded(&mut self, _path: &Path, scene: Handle<Scene>, context: &mut PluginContext) {
+    fn on_scene_loaded(
+        &mut self,
+        _path: &Path,
+        scene: Handle<Scene>,
+        data: &[u8],
+        context: &mut PluginContext,
+    ) {
         let scene = &mut context.scenes[scene];
 
         let head = scene.graph.find_by_name_from_root("Head_Mesh").unwrap().0;

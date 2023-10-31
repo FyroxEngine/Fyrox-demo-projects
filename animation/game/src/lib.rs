@@ -4,7 +4,6 @@ use fyrox::{
     core::{algebra::Vector2, log::Log, pool::Handle},
     engine::GraphicsContext,
     event::{Event, WindowEvent},
-    event_loop::ControlFlow,
     gui::{
         grid::{Column, GridBuilder, Row},
         message::MessageDirection,
@@ -122,7 +121,7 @@ impl Game {
 }
 
 impl Plugin for Game {
-    fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
+    fn update(&mut self, context: &mut PluginContext) {
         let progress = context.resource_manager.state().loading_progress() as f32 / 100.0;
         context
             .user_interface
@@ -141,12 +140,7 @@ impl Plugin for Game {
         }
     }
 
-    fn on_os_event(
-        &mut self,
-        event: &Event<()>,
-        mut context: PluginContext,
-        _control_flow: &mut ControlFlow,
-    ) {
+    fn on_os_event(&mut self, event: &Event<()>, mut context: PluginContext) {
         match event {
             Event::WindowEvent { event, .. } => {
                 if let WindowEvent::Resized(size) = event {
@@ -160,11 +154,7 @@ impl Plugin for Game {
         }
     }
 
-    fn on_graphics_context_initialized(
-        &mut self,
-        mut context: PluginContext,
-        _control_flow: &mut ControlFlow,
-    ) {
+    fn on_graphics_context_initialized(&mut self, mut context: PluginContext) {
         let graphics_context = context.graphics_context.as_initialized_mut();
 
         let mut quality_settings = QualitySettings::high();
@@ -185,7 +175,13 @@ impl Plugin for Game {
         );
     }
 
-    fn on_scene_loaded(&mut self, _path: &Path, scene: Handle<Scene>, context: &mut PluginContext) {
+    fn on_scene_loaded(
+        &mut self,
+        _path: &Path,
+        scene: Handle<Scene>,
+        _data: &[u8],
+        context: &mut PluginContext,
+    ) {
         self.scene = scene;
 
         context

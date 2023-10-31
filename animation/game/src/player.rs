@@ -1,3 +1,4 @@
+use fyrox::keyboard::PhysicalKey;
 use fyrox::{
     animation::machine::Parameter,
     core::{
@@ -69,13 +70,15 @@ impl ScriptTrait for Player {
             Event::WindowEvent { event, .. } => {
                 if let WindowEvent::KeyboardInput { event, .. } = event {
                     let pressed = event.state == ElementState::Pressed;
-                    match event.physical_key {
-                        KeyCode::KeyW => self.walk_forward = pressed,
-                        KeyCode::KeyS => self.walk_backward = pressed,
-                        KeyCode::KeyA => self.walk_left = pressed,
-                        KeyCode::KeyD => self.walk_right = pressed,
-                        KeyCode::ShiftLeft => self.run = pressed,
-                        _ => (),
+                    if let PhysicalKey::Code(code) = event.physical_key {
+                        match code {
+                            KeyCode::KeyW => self.walk_forward = pressed,
+                            KeyCode::KeyS => self.walk_backward = pressed,
+                            KeyCode::KeyA => self.walk_left = pressed,
+                            KeyCode::KeyD => self.walk_right = pressed,
+                            KeyCode::ShiftLeft => self.run = pressed,
+                            _ => (),
+                        }
                     }
                 }
             }

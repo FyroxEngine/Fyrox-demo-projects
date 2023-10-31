@@ -316,11 +316,18 @@
     scene_settings: {
         "data/scene.rgs": (
             camera_settings: (
-                position: (0.0, 1.0, 0.0),
-                yaw: 0.0,
-                pitch: 0.0,
+                position: (2.305601, 1.3600224, -5.9842043),
+                yaw: -4.6299996,
+                pitch: 0.5500001,
             ),
-            node_infos: {},
+            node_infos: {
+                (
+                    index: 414,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+            },
         ),
     },
     recent: (
@@ -330,7 +337,7 @@
     ),
     windows: (
         window_position: (0.0, 0.0),
-        window_size: (1798.0, 768.0),
+        window_size: (1920.0, 1017.0),
         layout: None,
     ),
 )

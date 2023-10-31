@@ -6,14 +6,13 @@ use fyrox::{
 };
 
 fn main() {
+    let mut window_attributes = WindowAttributes::default();
+    window_attributes.inner_size = Some(LogicalSize::new(1280.0, 720.0).into());
+    window_attributes.title = "Animation".to_string();
     let mut executor = Executor::from_params(
         EventLoop::new().unwrap(),
         GraphicsContextParams {
-            window_attributes: WindowAttributes {
-                inner_size: Some(LogicalSize::new(1280.0, 720.0).into()),
-                title: "Animation".to_string(),
-                ..Default::default()
-            },
+            window_attributes,
             vsync: false,
         },
     );

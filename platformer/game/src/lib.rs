@@ -1,4 +1,5 @@
 //! Game project.
+use fyrox::keyboard::PhysicalKey;
 use fyrox::{
     animation::spritesheet::SpriteSheetAnimation,
     core::{
@@ -11,7 +12,6 @@ use fyrox::{
     },
     engine::GraphicsContext,
     event::{ElementState, Event, WindowEvent},
-    event_loop::ControlFlow,
     gui::{
         message::MessageDirection,
         text::{TextBuilder, TextMessage},
@@ -72,7 +72,7 @@ impl Game {
 }
 
 impl Plugin for Game {
-    fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
+    fn update(&mut self, context: &mut PluginContext) {
         if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
             context.user_interface.send_message(TextMessage::text(
                 self.debug_text,
@@ -86,6 +86,7 @@ impl Plugin for Game {
         &mut self,
         _path: &Path,
         scene: Handle<Scene>,
+        _data: &[u8],
         _context: &mut PluginContext,
     ) {
         self.scene = scene;
@@ -131,11 +132,13 @@ impl ScriptTrait for Player {
             if let WindowEvent::KeyboardInput { event: input, .. } = event {
                 let is_pressed = input.state == ElementState::Pressed;
 
-                match input.physical_key {
-                    KeyCode::KeyA => self.move_left = is_pressed,
-                    KeyCode::KeyD => self.move_right = is_pressed,
-                    KeyCode::Space => self.jump = is_pressed,
-                    _ => (),
+                if let PhysicalKey::Code(code) = input.physical_key {
+                    match code {
+                        KeyCode::KeyA => self.move_left = is_pressed,
+                        KeyCode::KeyD => self.move_right = is_pressed,
+                        KeyCode::Space => self.jump = is_pressed,
+                        _ => (),
+                    }
                 }
             }
         }
