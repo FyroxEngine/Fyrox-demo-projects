@@ -10,7 +10,6 @@ use fyrox::{
         pool::Handle,
     },
     engine::GraphicsContext,
-    event_loop::ControlFlow,
     gui::{
         border::BorderBuilder,
         brush::Brush,
@@ -61,6 +60,8 @@ use fyrox::{
 use std::path::Path;
 use std::rc::Rc;
 
+pub mod custom;
+
 pub struct GameConstructor;
 
 impl PluginConstructor for GameConstructor {
@@ -90,7 +91,7 @@ impl Game {
 }
 
 impl Plugin for Game {
-    fn update(&mut self, context: &mut PluginContext, _control_flow: &mut ControlFlow) {
+    fn update(&mut self, context: &mut PluginContext) {
         if let Some(interface) = self.interface.as_ref() {
             if let GraphicsContext::Initialized(ctx) = context.graphics_context {
                 context.user_interface.send_message(TextMessage::text(
@@ -102,20 +103,11 @@ impl Plugin for Game {
         }
     }
 
-    fn on_graphics_context_initialized(
-        &mut self,
-        mut context: PluginContext,
-        _control_flow: &mut ControlFlow,
-    ) {
+    fn on_graphics_context_initialized(&mut self, mut context: PluginContext) {
         self.interface = Some(Interface::new(&mut context));
     }
 
-    fn on_ui_message(
-        &mut self,
-        context: &mut PluginContext,
-        message: &UiMessage,
-        _control_flow: &mut ControlFlow,
-    ) {
+    fn on_ui_message(&mut self, context: &mut PluginContext, message: &UiMessage) {
         if let Some(interface) = self.interface.as_mut() {
             if let Some(ScrollBarMessage::Value(value)) = message.data() {
                 if message.direction() == MessageDirection::FromWidget {
@@ -199,7 +191,13 @@ impl Plugin for Game {
         }
     }
 
-    fn on_scene_loaded(&mut self, _path: &Path, scene: Handle<Scene>, context: &mut PluginContext) {
+    fn on_scene_loaded(
+        &mut self,
+        _path: &Path,
+        scene: Handle<Scene>,
+        _data: &[u8],
+        context: &mut PluginContext,
+    ) {
         self.scene = scene;
 
         let scene_ref = &mut context.scenes[scene];
@@ -703,6 +701,20 @@ impl Interface {
                                 right: 2.0,
                                 bottom: 1.0,
                             })
+                            .build(ctx),
+                        )
+                        .with_child(
+                            custom::MyButtonBuilder::new(
+                                WidgetBuilder::new()
+                                    .with_width(200.0)
+                                    .with_height(32.0)
+                                    .with_margin(Thickness::uniform(10.0))
+                                    .with_tooltip(make_simple_tooltip(
+                                        ctx,
+                                        "Custom button widget - see `Custom Widget` chapter of the book",
+                                    )),
+                            )
+                            .with_text("Custom Button Widget".to_string())
                             .build(ctx),
                         )
                         .with_child(

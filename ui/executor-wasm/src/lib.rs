@@ -44,15 +44,14 @@ pub fn set_panic_hook() {
 #[wasm_bindgen]
 pub fn main() {
     set_panic_hook();
+    let mut window_attributes = WindowAttributes::default();
+    window_attributes.inner_size = Some(LogicalSize::new(1280.0, 720.0).into());
+    window_attributes.title = "User Interface".to_string();
+    window_attributes.resizable = true;
     let mut executor = Executor::from_params(
         EventLoop::new().unwrap(),
         GraphicsContextParams {
-            window_attributes: WindowAttributes {
-                inner_size: Some(LogicalSize::new(1280.0, 720.0).into()),
-                title: "User Interface".to_string(),
-                resizable: true,
-                ..Default::default()
-            },
+            window_attributes,
             vsync: true,
         },
     );
