@@ -145,6 +145,7 @@ impl Plugin for Game {
         data: &[u8],
         context: &mut PluginContext,
     ) {
+        self.scene = scene;
         let scene = &mut context.scenes[scene];
 
         let head = scene.graph.find_by_name_from_root("Head_Mesh").unwrap().0;
