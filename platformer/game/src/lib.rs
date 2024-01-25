@@ -1,9 +1,8 @@
 //! Game project.
-use fyrox::keyboard::PhysicalKey;
 use fyrox::{
-    animation::spritesheet::SpriteSheetAnimation,
     core::{
         algebra::{Vector2, Vector3},
+        impl_component_provider,
         pool::Handle,
         reflect::prelude::*,
         uuid::{uuid, Uuid},
@@ -13,15 +12,16 @@ use fyrox::{
     engine::GraphicsContext,
     event::{ElementState, Event, WindowEvent},
     gui::{
-        message::MessageDirection,
-        text::{TextBuilder, TextMessage},
-        widget::WidgetBuilder,
-        UiNode,
+        button::ButtonMessage,
+        message::{MessageDirection, UiMessage},
+        text::TextMessage,
+        widget::WidgetMessage,
+        UiNode, UserInterface,
     },
-    impl_component_provider,
-    keyboard::KeyCode,
+    keyboard::{KeyCode, PhysicalKey},
     plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
     scene::{
+        animation::spritesheet::SpriteSheetAnimation,
         dim2::{rectangle::Rectangle, rigidbody::RigidBody},
         node::Node,
         Scene,
@@ -53,20 +53,30 @@ impl PluginConstructor for GameConstructor {
 pub struct Game {
     scene: Handle<Scene>,
     debug_text: Handle<UiNode>,
+    new_game: Handle<UiNode>,
+    exit: Handle<UiNode>,
 }
 
 impl Game {
-    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
-        context
-            .async_scene_loader
+    pub fn new(scene_path: Option<&str>, ctx: PluginContext) -> Self {
+        ctx.async_scene_loader
             .request(scene_path.unwrap_or("data/scene.rgs"));
 
-        let debug_text =
-            TextBuilder::new(WidgetBuilder::new()).build(&mut context.user_interface.build_ctx());
+        ctx.task_pool.spawn_plugin_task(
+            UserInterface::load_from_file("data/menu.ui", ctx.resource_manager.clone()),
+            |result, game: &mut Game, ctx| {
+                *ctx.user_interface = result.unwrap();
+                game.new_game = ctx.user_interface.find_by_name_down_from_root("NewGame");
+                game.exit = ctx.user_interface.find_by_name_down_from_root("Exit");
+                game.debug_text = ctx.user_interface.find_by_name_down_from_root("DebugText");
+            },
+        );
 
         Self {
             scene: Handle::NONE,
-            debug_text,
+            new_game: Handle::NONE,
+            exit: Handle::NONE,
+            debug_text: Handle::NONE,
         }
     }
 }
@@ -79,6 +89,24 @@ impl Plugin for Game {
                 MessageDirection::ToWidget,
                 format!("{}", graphics_context.renderer.get_statistics()),
             ));
+        }
+    }
+
+    fn on_ui_message(&mut self, context: &mut PluginContext, message: &UiMessage) {
+        if let Some(ButtonMessage::Click) = message.data() {
+            if message.destination() == self.new_game {
+                context
+                    .user_interface
+                    .send_message(WidgetMessage::visibility(
+                        context.user_interface.root(),
+                        MessageDirection::ToWidget,
+                        false,
+                    ));
+            } else if message.destination() == self.exit {
+                if let Some(window_target) = context.window_target {
+                    window_target.exit();
+                }
+            }
         }
     }
 
@@ -199,7 +227,11 @@ impl ScriptTrait for Player {
                 .and_then(|n| n.cast_mut::<Rectangle>())
             {
                 // Set new frame to the sprite.
-                sprite.set_texture(current_animation.texture());
+                sprite
+                    .material()
+                    .data_ref()
+                    .set_texture(&"diffuseTexture".into(), current_animation.texture().into())
+                    .unwrap();
                 sprite.set_uv_rect(
                     current_animation
                         .current_frame_uv_rect()
@@ -207,10 +239,5 @@ impl ScriptTrait for Player {
                 );
             }
         }
-    }
-
-    // Returns unique script id for serialization needs.
-    fn id(&self) -> Uuid {
-        Self::type_uuid()
     }
 }

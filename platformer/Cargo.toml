@@ -10,6 +10,6 @@ resolver = "2"
 opt-level = 3
 
 [workspace.dependencies.fyrox]
-git = "https://github.com/FyroxEngine/Fyrox"
+version = "0.33"
 [workspace.dependencies.fyroxed_base]
-git = "https://github.com/FyroxEngine/Fyrox"
+version = "0.20"

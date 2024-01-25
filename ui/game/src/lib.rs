@@ -55,10 +55,9 @@ use fyrox::{
     renderer::{CsmSettings, ShadowMapPrecision},
     resource::texture::Texture,
     scene::{node::Node, Scene},
-    utils,
 };
 use std::path::Path;
-use std::rc::Rc;
+use std::sync::Arc;
 
 pub mod custom;
 
@@ -263,9 +262,11 @@ fn make_potions_images(
                     1.0 / 6.0,
                     1.0 / 3.0,
                 ))
-                .with_texture(utils::into_gui_texture(
-                    resource_manager.request::<Texture, _>("data/Potions.png"),
-                ))
+                .with_texture(
+                    resource_manager
+                        .request::<Texture>("data/Potions.png")
+                        .into(),
+                )
                 .build(ctx),
             );
         }
@@ -303,9 +304,11 @@ fn make_chests(ctx: &mut BuildContext, resource_manager: &ResourceManager) -> Ve
                                         1.0 / w as f32,
                                         1.0 / h as f32,
                                     ))
-                                    .with_texture(utils::into_gui_texture(
-                                        resource_manager.request::<Texture, _>("data/chests.png"),
-                                    ))
+                                    .with_texture(
+                                        resource_manager
+                                            .request::<Texture>("data/chests.png")
+                                            .into(),
+                                    )
                                     .build(ctx),
                                 )
                                 .with_child(
@@ -358,9 +361,11 @@ fn make_tree(
                             1.0 / w as f32,
                             1.0 / h as f32,
                         ))
-                        .with_texture(utils::into_gui_texture(
-                            resource_manager.request::<Texture, _>("data/armours.png"),
-                        ))
+                        .with_texture(
+                            resource_manager
+                                .request::<Texture>("data/armours.png")
+                                .into(),
+                        )
                         .build(ctx),
                     )
                     .with_child(
@@ -548,7 +553,7 @@ impl Interface {
                                     .with_context(InspectorContext::from_object(
                                         &quality_settings,
                                         ctx,
-                                        Rc::new(container),
+                                        Arc::new(container),
                                         None,
                                         u64::MAX,
                                         0,
@@ -623,13 +628,13 @@ impl Interface {
                                                                 .with_width(20.0)
                                                                 .with_height(20.0),
                                                         )
-                                                        .with_texture(utils::into_gui_texture(
+                                                        .with_texture(
                                                             plugin_ctx
                                                                 .resource_manager
-                                                                .request::<Texture, _>(
+                                                                .request::<Texture>(
                                                                     "data/Potions.png",
-                                                                ),
-                                                        ))
+                                                                ).into(),
+                                                        )
                                                         .with_uv_rect(Rect::new(
                                                             4.0 / 6.0,
                                                             0.0,

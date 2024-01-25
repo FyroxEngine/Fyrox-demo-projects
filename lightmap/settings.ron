@@ -316,9 +316,9 @@
     scene_settings: {
         "data/Sponza.rgs": (
             camera_settings: (
-                position: (-2.3504205, 5.434616, -5.419357),
-                yaw: -7.799997,
-                pitch: 0.4599999,
+                position: (-1.5454667, 5.488642, -7.5228386),
+                yaw: -8.66,
+                pitch: 0.41999987,
             ),
             node_infos: {
                 (

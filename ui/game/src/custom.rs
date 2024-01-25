@@ -3,6 +3,7 @@ use fyrox::{
         color::{Color, Hsv},
         pool::Handle,
         reflect::prelude::*,
+        type_traits::prelude::*,
         visitor::prelude::*,
     },
     gui::{
@@ -16,10 +17,7 @@ use fyrox::{
         VerticalAlignment,
     },
 };
-use std::{
-    any::{Any, TypeId},
-    ops::{Deref, DerefMut},
-};
+use std::ops::{Deref, DerefMut};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum MyButtonMessage {
@@ -34,7 +32,8 @@ impl MyButtonMessage {
     );
 }
 
-#[derive(Clone, Debug, Reflect, Visit)]
+#[derive(Clone, Debug, Reflect, Visit, TypeUuidProvider, ComponentProvider)]
+#[type_uuid(id = "3392233e-dafb-42f6-a53d-92e3b7e554ad")]
 struct MyButton {
     widget: Widget,
     border: Handle<UiNode>,
@@ -64,14 +63,6 @@ impl MyButton {
 }
 
 impl Control for MyButton {
-    fn query_component(&self, type_id: TypeId) -> Option<&dyn Any> {
-        if type_id == TypeId::of::<Self>() {
-            Some(self)
-        } else {
-            None
-        }
-    }
-
     fn handle_routed_message(&mut self, ui: &mut UserInterface, message: &mut UiMessage) {
         // Pass another message to the base widget first.
         self.widget.handle_routed_message(ui, message);

@@ -1,24 +1,23 @@
-use fyrox::keyboard::PhysicalKey;
 use fyrox::{
-    animation::machine::Parameter,
     core::{
         algebra::{UnitQuaternion, Vector3},
         math::SmoothAngle,
         pool::Handle,
         reflect::prelude::*,
-        uuid::{uuid, Uuid},
+        type_traits::prelude::*,
         variable::InheritableVariable,
         visitor::prelude::*,
         TypeUuidProvider,
     },
     event::{DeviceEvent, ElementState, Event, WindowEvent},
-    impl_component_provider,
-    keyboard::KeyCode,
-    scene::{animation::absm::AnimationBlendingStateMachine, node::Node, rigidbody::RigidBody},
+    keyboard::{KeyCode, PhysicalKey},
+    scene::{animation::absm::prelude::*, node::Node, rigidbody::RigidBody},
     script::{ScriptContext, ScriptTrait},
 };
 
-#[derive(Visit, Reflect, Default, Debug, Clone)]
+#[derive(Visit, Reflect, Default, Debug, Clone, TypeUuidProvider, ComponentProvider)]
+#[type_uuid(id = "e224206c-856b-40ff-84e1-7f9bf52c2bb2")]
+#[visit(optional)]
 pub struct Player {
     camera_pivot: InheritableVariable<Handle<Node>>,
     camera_hinge: InheritableVariable<Handle<Node>>,
@@ -54,14 +53,6 @@ pub struct Player {
     #[reflect(hidden)]
     #[visit(skip)]
     pitch: f32,
-}
-
-impl_component_provider!(Player);
-
-impl TypeUuidProvider for Player {
-    fn type_uuid() -> Uuid {
-        uuid!("e224206c-856b-40ff-84e1-7f9bf52c2bb2")
-    }
 }
 
 impl ScriptTrait for Player {
@@ -196,9 +187,5 @@ impl ScriptTrait for Player {
                     Parameter::Index(if self.run { 1 } else { 0 }),
                 );
         }
-    }
-
-    fn id(&self) -> Uuid {
-        Self::type_uuid()
     }
 }

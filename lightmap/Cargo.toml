@@ -15,8 +15,8 @@ opt-level = 3
 debug = true
 
 [workspace.dependencies.fyrox]
-git = "https://github.com/FyroxEngine/Fyrox"
+version = "0.33"
 [workspace.dependencies.fyroxed_base]
-git = "https://github.com/FyroxEngine/Fyrox"
+version = "0.20"
 [workspace.dependencies.fyrox-scripts]
-git = "https://github.com/FyroxEngine/Fyrox"
+version = "0.2"
