@@ -6,7 +6,7 @@ use fyrox::{
     event_loop::EventLoop,
     window::WindowAttributes,
 };
-use ui::GameConstructor;
+use ui::Game;
 
 #[wasm_bindgen]
 extern "C" {
@@ -53,8 +53,9 @@ pub fn main() {
         GraphicsContextParams {
             window_attributes,
             vsync: true,
+            msaa_sample_count: None,
         },
     );
-    executor.add_plugin_constructor(GameConstructor);
+    executor.add_plugin(Game::default());
     executor.run()
 }

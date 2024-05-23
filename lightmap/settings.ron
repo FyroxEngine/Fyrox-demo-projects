@@ -36,6 +36,7 @@
     general: (
         show_node_removal_dialog: true,
         suspend_unfocused_editor: true,
+        script_editor: SystemDefault,
     ),
     debugging: (
         show_physics: true,
@@ -316,9 +317,9 @@
     scene_settings: {
         "data/Sponza.rgs": (
             camera_settings: (
-                position: (-1.5454667, 5.488642, -7.5228386),
-                yaw: -8.66,
-                pitch: 0.41999987,
+                position: (-22.104399, 0.64813006, -8.042128),
+                yaw: -7.2999973,
+                pitch: 0.36999986,
             ),
             node_infos: {
                 (
@@ -336,8 +337,8 @@
         ],
     ),
     windows: (
-        window_position: (0.0, 0.0),
-        window_size: (2560.0, 1377.0),
+        window_position: (-8.0, -8.0),
+        window_size: (1920.0, 1017.0),
         layout: None,
     ),
 )

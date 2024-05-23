@@ -1,5 +1,5 @@
 //! Executor with your game connected to it as a plugin.
-use animation::GameConstructor;
+use animation::Game;
 use fyrox::{
     dpi::LogicalSize, engine::executor::Executor, engine::GraphicsContextParams,
     event_loop::EventLoop, window::WindowAttributes,
@@ -14,8 +14,9 @@ fn main() {
         GraphicsContextParams {
             window_attributes,
             vsync: false,
+            msaa_sample_count: None,
         },
     );
-    executor.add_plugin_constructor(GameConstructor);
+    executor.add_plugin(Game::default());
     executor.run()
 }

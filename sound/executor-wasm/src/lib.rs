@@ -5,7 +5,7 @@ use fyrox::engine::executor::Executor;
 use fyrox::engine::GraphicsContextParams;
 use fyrox::event_loop::EventLoop;
 use fyrox::window::WindowAttributes;
-use sound::GameConstructor;
+use sound::Game;
 
 #[wasm_bindgen]
 extern "C" {
@@ -51,8 +51,9 @@ pub fn main() {
         GraphicsContextParams {
             window_attributes,
             vsync: false,
+            msaa_sample_count: None,
         },
     );
-    executor.add_plugin_constructor(GameConstructor);
+    executor.add_plugin(Game::default());
     executor.run()
 }

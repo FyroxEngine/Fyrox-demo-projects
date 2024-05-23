@@ -2,12 +2,11 @@
 use fyrox::{
     core::{
         algebra::{Vector2, Vector3},
-        impl_component_provider,
         pool::Handle,
         reflect::prelude::*,
-        uuid::{uuid, Uuid},
         visitor::prelude::*,
         TypeUuidProvider,
+        type_traits::prelude::*
     },
     engine::GraphicsContext,
     event::{ElementState, Event, WindowEvent},
@@ -19,7 +18,7 @@ use fyrox::{
         UiNode, UserInterface,
     },
     keyboard::{KeyCode, PhysicalKey},
-    plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext},
+    plugin::{Plugin, PluginContext, PluginRegistrationContext},
     scene::{
         animation::spritesheet::SpriteSheetAnimation,
         dim2::{rectangle::Rectangle, rigidbody::RigidBody},
@@ -29,27 +28,10 @@ use fyrox::{
     script::{ScriptContext, ScriptTrait},
 };
 use std::path::Path;
+use fyrox::core::ComponentProvider;
+use fyrox::graph::SceneGraph;
 
-pub struct GameConstructor;
-
-impl TypeUuidProvider for GameConstructor {
-    fn type_uuid() -> Uuid {
-        // Ideally this should be unique per-project.
-        uuid!("cb358b1c-fc23-4c44-9e59-0a9671324196")
-    }
-}
-
-impl PluginConstructor for GameConstructor {
-    fn register(&self, context: PluginRegistrationContext) {
-        let script_constructors = &context.serialization_context.script_constructors;
-        script_constructors.add::<Player>("Player");
-    }
-
-    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
-        Box::new(Game::new(scene_path, context))
-    }
-}
-
+#[derive(Visit, Reflect, Debug, Default)]
 pub struct Game {
     scene: Handle<Scene>,
     debug_text: Handle<UiNode>,
@@ -57,34 +39,30 @@ pub struct Game {
     exit: Handle<UiNode>,
 }
 
-impl Game {
-    pub fn new(scene_path: Option<&str>, ctx: PluginContext) -> Self {
+impl Plugin for Game {
+    fn register(&self, context: PluginRegistrationContext) {
+        let script_constructors = &context.serialization_context.script_constructors;
+        script_constructors.add::<Player>("Player");
+    }
+
+    fn init(&mut self, scene_path: Option<&str>, ctx: PluginContext) {
         ctx.async_scene_loader
             .request(scene_path.unwrap_or("data/scene.rgs"));
 
         ctx.task_pool.spawn_plugin_task(
             UserInterface::load_from_file("data/menu.ui", ctx.resource_manager.clone()),
             |result, game: &mut Game, ctx| {
-                *ctx.user_interface = result.unwrap();
-                game.new_game = ctx.user_interface.find_by_name_down_from_root("NewGame");
-                game.exit = ctx.user_interface.find_by_name_down_from_root("Exit");
-                game.debug_text = ctx.user_interface.find_by_name_down_from_root("DebugText");
+                *ctx.user_interfaces.first_mut() = result.unwrap();
+                game.new_game = ctx.user_interfaces.first().find_handle_by_name_from_root("NewGame");
+                game.exit = ctx.user_interfaces.first().find_handle_by_name_from_root("Exit");
+                game.debug_text = ctx.user_interfaces.first().find_handle_by_name_from_root("DebugText");
             },
         );
-
-        Self {
-            scene: Handle::NONE,
-            new_game: Handle::NONE,
-            exit: Handle::NONE,
-            debug_text: Handle::NONE,
-        }
     }
-}
 
-impl Plugin for Game {
     fn update(&mut self, context: &mut PluginContext) {
         if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
-            context.user_interface.send_message(TextMessage::text(
+            context.user_interfaces.first().send_message(TextMessage::text(
                 self.debug_text,
                 MessageDirection::ToWidget,
                 format!("{}", graphics_context.renderer.get_statistics()),
@@ -96,9 +74,9 @@ impl Plugin for Game {
         if let Some(ButtonMessage::Click) = message.data() {
             if message.destination() == self.new_game {
                 context
-                    .user_interface
+                    .user_interfaces.first()
                     .send_message(WidgetMessage::visibility(
-                        context.user_interface.root(),
+                        context.user_interfaces.first().root(),
                         MessageDirection::ToWidget,
                         false,
                     ));
@@ -121,7 +99,9 @@ impl Plugin for Game {
     }
 }
 
-#[derive(Visit, Reflect, Debug, Clone)]
+#[derive(Visit, Reflect, Debug, Clone, TypeUuidProvider, ComponentProvider)]
+#[type_uuid(id = "c5671d19-9f1a-4286-8486-add4ebaadaec")]
+#[visit(optional)]
 struct Player {
     sprite: Handle<Node>,
     move_left: bool,
@@ -130,8 +110,6 @@ struct Player {
     animations: Vec<SpriteSheetAnimation>,
     current_animation: u32,
 }
-
-impl_component_provider!(Player,);
 
 impl Default for Player {
     fn default() -> Self {
@@ -143,13 +121,6 @@ impl Default for Player {
             animations: Default::default(),
             current_animation: 0,
         }
-    }
-}
-
-impl TypeUuidProvider for Player {
-    // Returns unique script id for serialization needs.
-    fn type_uuid() -> Uuid {
-        uuid!("c5671d19-9f1a-4286-8486-add4ebaadaec")
     }
 }
 

@@ -5,7 +5,7 @@ use fyrox::{
     event_loop::EventLoop,
     window::WindowAttributes,
 };
-use ui::GameConstructor;
+use ui::Game;
 
 fn main() {
     let mut window_attributes = WindowAttributes::default();
@@ -17,8 +17,9 @@ fn main() {
         GraphicsContextParams {
             window_attributes,
             vsync: true,
+            msaa_sample_count: Some(4),
         },
     );
-    executor.add_plugin_constructor(GameConstructor);
+    executor.add_plugin(Game::default());
     executor.run()
 }

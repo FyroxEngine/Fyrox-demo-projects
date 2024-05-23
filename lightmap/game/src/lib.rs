@@ -1,28 +1,18 @@
 //! Game project.
-use fyrox::plugin::{Plugin, PluginConstructor, PluginContext, PluginRegistrationContext};
+use fyrox::core::{reflect::prelude::*, visitor::prelude::*};
+use fyrox::plugin::{Plugin, PluginContext, PluginRegistrationContext};
 
-pub struct GameConstructor;
+#[derive(Visit, Reflect, Default, Debug)]
+pub struct Game;
 
-impl PluginConstructor for GameConstructor {
+impl Plugin for Game {
     fn register(&self, context: PluginRegistrationContext) {
         fyrox_scripts::register(&context.serialization_context.script_constructors);
     }
 
-    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
-        Box::new(Game::new(scene_path, context))
-    }
-}
-
-pub struct Game;
-
-impl Game {
-    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
+    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) {
         context
             .async_scene_loader
             .request(scene_path.unwrap_or("data/Sponza.rgs"));
-
-        Self
     }
 }
-
-impl Plugin for Game {}

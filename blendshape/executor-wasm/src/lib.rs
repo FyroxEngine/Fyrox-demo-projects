@@ -1,5 +1,5 @@
 //! Executor with your game connected to it as a plugin.
-use blendshape::GameConstructor;
+use blendshape::Game;
 use fyrox::core::wasm_bindgen::{self, prelude::*};
 use fyrox::dpi::LogicalSize;
 use fyrox::engine::executor::Executor;
@@ -51,8 +51,9 @@ pub fn main() {
         GraphicsContextParams {
             window_attributes,
             vsync: true,
+            msaa_sample_count: None,
         },
     );
-    executor.add_plugin_constructor(GameConstructor);
+    executor.add_plugin(Game::default());
     executor.run()
 }

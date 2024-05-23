@@ -1,13 +1,16 @@
 //! Game project.
+use fyrox::graph::SceneGraph;
 use fyrox::{
     asset::manager::ResourceManager,
     core::{
         algebra::{UnitQuaternion, Vector2, Vector3},
         color::Color,
-        curve::{Curve, CurveKey, CurveKeyKind},
         log::Log,
+        math::curve::{Curve, CurveKey, CurveKeyKind},
         math::Rect,
         pool::Handle,
+        reflect::prelude::*,
+        visitor::prelude::*,
     },
     engine::GraphicsContext,
     gui::{
@@ -50,7 +53,7 @@ use fyrox::{
         wrap_panel::WrapPanelBuilder,
         BuildContext, HorizontalAlignment, Orientation, Thickness, UiNode, VerticalAlignment,
     },
-    plugin::{Plugin, PluginConstructor, PluginContext},
+    plugin::{Plugin, PluginContext},
     rand::{thread_rng, Rng},
     renderer::{CsmSettings, ShadowMapPrecision},
     resource::texture::Texture,
@@ -61,43 +64,33 @@ use std::sync::Arc;
 
 pub mod custom;
 
-pub struct GameConstructor;
-
-impl PluginConstructor for GameConstructor {
-    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
-        Box::new(Game::new(scene_path, context))
-    }
-}
-
+#[derive(Visit, Default, Reflect, Debug)]
 pub struct Game {
     scene: Handle<Scene>,
+    #[visit(skip)]
+    #[reflect(hidden)]
     interface: Option<Interface>,
     paladin: Handle<Node>,
 }
 
-impl Game {
-    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
+impl Plugin for Game {
+    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) {
         context
             .async_scene_loader
             .request(scene_path.unwrap_or("data/scene.rgs"));
-
-        Self {
-            scene: Handle::NONE,
-            interface: None,
-            paladin: Default::default(),
-        }
     }
-}
 
-impl Plugin for Game {
     fn update(&mut self, context: &mut PluginContext) {
         if let Some(interface) = self.interface.as_ref() {
             if let GraphicsContext::Initialized(ctx) = context.graphics_context {
-                context.user_interface.send_message(TextMessage::text(
-                    interface.debug_text,
-                    MessageDirection::ToWidget,
-                    format!("FPS: {}", ctx.renderer.get_statistics().frames_per_second),
-                ))
+                context
+                    .user_interfaces
+                    .first()
+                    .send_message(TextMessage::text(
+                        interface.debug_text,
+                        MessageDirection::ToWidget,
+                        format!("FPS: {}", ctx.renderer.get_statistics().frames_per_second),
+                    ))
             }
         }
     }
@@ -138,16 +131,22 @@ impl Plugin for Game {
                 // This is not ideal because there is tight coupling between UI code and model values,
                 // but still good enough for example.
                 if message.destination() == interface.reset {
-                    context.user_interface.send_message(ScrollBarMessage::value(
-                        interface.scale,
-                        MessageDirection::ToWidget,
-                        0.005,
-                    ));
-                    context.user_interface.send_message(ScrollBarMessage::value(
-                        interface.yaw,
-                        MessageDirection::ToWidget,
-                        180.0f32,
-                    ));
+                    context
+                        .user_interfaces
+                        .first()
+                        .send_message(ScrollBarMessage::value(
+                            interface.scale,
+                            MessageDirection::ToWidget,
+                            0.005,
+                        ));
+                    context
+                        .user_interfaces
+                        .first()
+                        .send_message(ScrollBarMessage::value(
+                            interface.yaw,
+                            MessageDirection::ToWidget,
+                            180.0f32,
+                        ));
                 } else if message.destination() == interface.press_me_button {
                     interface.message_box = MessageBoxBuilder::new(
                         WindowBuilder::new(
@@ -158,14 +157,17 @@ impl Plugin for Game {
                     )
                     .with_text("Hello!")
                     .with_buttons(MessageBoxButtons::Ok)
-                    .build(&mut context.user_interface.build_ctx());
+                    .build(&mut context.user_interfaces.first_mut().build_ctx());
 
-                    context.user_interface.send_message(MessageBoxMessage::open(
-                        interface.message_box,
-                        MessageDirection::ToWidget,
-                        None,
-                        None,
-                    ));
+                    context
+                        .user_interfaces
+                        .first()
+                        .send_message(MessageBoxMessage::open(
+                            interface.message_box,
+                            MessageDirection::ToWidget,
+                            None,
+                            None,
+                        ));
                 }
             } else if let Some(InspectorMessage::PropertyChanged(prop)) = message.data() {
                 if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
@@ -181,10 +183,13 @@ impl Plugin for Game {
                 }
             } else if let Some(MessageBoxMessage::Close(_)) = message.data() {
                 if message.destination() == interface.message_box {
-                    context.user_interface.send_message(WidgetMessage::remove(
-                        interface.message_box,
-                        MessageDirection::ToWidget,
-                    ));
+                    context
+                        .user_interfaces
+                        .first()
+                        .send_message(WidgetMessage::remove(
+                            interface.message_box,
+                            MessageDirection::ToWidget,
+                        ));
                 }
             }
         }
@@ -202,22 +207,28 @@ impl Plugin for Game {
         let scene_ref = &mut context.scenes[scene];
         if let Some((handle, paladin)) = scene_ref.graph.find_by_name_from_root("paladin.fbx") {
             if let Some(interface) = self.interface.as_ref() {
-                context.user_interface.send_message(ScrollBarMessage::value(
-                    interface.yaw,
-                    MessageDirection::ToWidget,
-                    paladin
-                        .local_transform()
-                        .rotation()
-                        .euler_angles()
-                        .2
-                        .to_degrees(),
-                ));
+                context
+                    .user_interfaces
+                    .first()
+                    .send_message(ScrollBarMessage::value(
+                        interface.yaw,
+                        MessageDirection::ToWidget,
+                        paladin
+                            .local_transform()
+                            .rotation()
+                            .euler_angles()
+                            .2
+                            .to_degrees(),
+                    ));
 
-                context.user_interface.send_message(ScrollBarMessage::value(
-                    interface.scale,
-                    MessageDirection::ToWidget,
-                    paladin.local_transform().scale().x,
-                ));
+                context
+                    .user_interfaces
+                    .first()
+                    .send_message(ScrollBarMessage::value(
+                        interface.scale,
+                        MessageDirection::ToWidget,
+                        paladin.local_transform().scale().x,
+                    ));
             }
 
             self.paladin = handle;
@@ -225,6 +236,7 @@ impl Plugin for Game {
     }
 }
 
+#[derive(Debug)]
 struct Interface {
     debug_text: Handle<UiNode>,
     yaw: Handle<UiNode>,
@@ -413,7 +425,7 @@ impl Interface {
         let ctx = plugin_ctx.graphics_context.as_initialized_ref();
         let window_width = ctx.renderer.get_frame_size().0 as f32;
 
-        let ctx = &mut plugin_ctx.user_interface.build_ctx();
+        let ctx = &mut plugin_ctx.user_interfaces.first_mut().build_ctx();
 
         let yaw;
         let scale;
@@ -526,7 +538,7 @@ impl Interface {
             .renderer
             .get_quality_settings();
 
-        let container = PropertyEditorDefinitionContainer::new();
+        let container = PropertyEditorDefinitionContainer::with_default_editors();
         container.register_inheritable_inspectable::<CsmSettings>();
         container.register_inheritable_enum::<ShadowMapPrecision, _>();
 
@@ -856,7 +868,7 @@ impl Interface {
                                         parametric curves",
                                     )),
                             )
-                            .with_curve(Curve::from(vec![
+                            .with_curves(vec![Curve::from(vec![
                                 CurveKey::new(0.0, 30.0, CurveKeyKind::Constant),
                                 CurveKey::new(100.0, -30.0, CurveKeyKind::Linear),
                                 CurveKey::new(
@@ -875,7 +887,7 @@ impl Interface {
                                         right_tangent: 2.0,
                                     },
                                 ),
-                            ]))
+                            ])])
                             .build(ctx),
                         )
                         .with_child(

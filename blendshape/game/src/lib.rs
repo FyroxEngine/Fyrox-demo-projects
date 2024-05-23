@@ -1,9 +1,12 @@
 //! Game project.
+use fyrox::graph::SceneGraph;
 use fyrox::keyboard::PhysicalKey;
 use fyrox::{
     core::{
         algebra::{UnitQuaternion, Vector2, Vector3},
         pool::Handle,
+        reflect::prelude::*,
+        visitor::prelude::*,
     },
     engine::GraphicsContext,
     event::{ElementState, Event, WindowEvent},
@@ -18,55 +21,40 @@ use fyrox::{
         UiNode,
     },
     keyboard::KeyCode,
-    plugin::{Plugin, PluginConstructor, PluginContext},
+    plugin::{Plugin, PluginContext},
     scene::{node::Node, Scene},
 };
 use std::{collections::BTreeSet, path::Path};
 
-pub struct GameConstructor;
-
-impl PluginConstructor for GameConstructor {
-    fn create_instance(&self, scene_path: Option<&str>, context: PluginContext) -> Box<dyn Plugin> {
-        Box::new(Game::new(scene_path, context))
-    }
-}
-
+#[derive(Default, Debug, Reflect, Visit)]
 struct InputController {
     rotate_left: bool,
     rotate_right: bool,
 }
 
+#[derive(Debug, Visit, Reflect, Default)]
 pub struct Game {
     scene: Handle<Scene>,
     model_handle: Handle<Node>,
     input_controller: InputController,
     debug_text: Handle<UiNode>,
     model_angle: f32,
+    #[visit(skip)]
+    #[reflect(hidden)]
     sliders: Vec<(String, Handle<UiNode>)>,
 }
 
-impl Game {
-    pub fn new(scene_path: Option<&str>, context: PluginContext) -> Self {
+impl Plugin for Game {
+    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) {
         context
             .async_scene_loader
             .request(scene_path.unwrap_or("data/scene.rgs"));
 
-        Self {
-            scene: Handle::NONE,
-            model_handle: Default::default(),
-            input_controller: InputController {
-                rotate_left: false,
-                rotate_right: false,
-            },
-            debug_text: TextBuilder::new(WidgetBuilder::new())
-                .build(&mut context.user_interface.build_ctx()),
-            model_angle: 180.0f32.to_radians(),
-            sliders: vec![],
-        }
+        self.debug_text = TextBuilder::new(WidgetBuilder::new())
+            .build(&mut context.user_interfaces.first_mut().build_ctx());
+        self.model_angle = 180.0f32.to_radians();
     }
-}
 
-impl Plugin for Game {
     fn update(&mut self, context: &mut PluginContext) {
         if let Some(scene) = context.scenes.try_get_mut(self.scene) {
             // Rotate model according to input controller state
@@ -84,7 +72,7 @@ impl Plugin for Game {
                 ));
 
             if let GraphicsContext::Initialized(ref graphics_context) = context.graphics_context {
-                context.user_interface.send_message(TextMessage::text(
+                context.user_interfaces.first().send_message(TextMessage::text(
                     self.debug_text,
                     MessageDirection::ToWidget,
                     format!(
@@ -142,7 +130,7 @@ impl Plugin for Game {
         &mut self,
         _path: &Path,
         scene: Handle<Scene>,
-        data: &[u8],
+        _data: &[u8],
         context: &mut PluginContext,
     ) {
         self.scene = scene;
@@ -162,7 +150,7 @@ impl Plugin for Game {
             }
         }
 
-        let ctx = &mut context.user_interface.build_ctx();
+        let ctx = &mut context.user_interfaces.first_mut().build_ctx();
 
         let mut children = Vec::new();
         let mut sliders = Vec::new();

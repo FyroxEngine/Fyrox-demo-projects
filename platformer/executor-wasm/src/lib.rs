@@ -5,7 +5,7 @@ use fyrox::engine::executor::Executor;
 use fyrox::engine::GraphicsContextParams;
 use fyrox::event_loop::EventLoop;
 use fyrox::window::WindowAttributes;
-use platformer::GameConstructor;
+use platformer::{Game};
 
 #[wasm_bindgen]
 extern "C" {
@@ -54,6 +54,6 @@ pub fn main() {
             vsync: true,
         },
     );
-    executor.add_plugin_constructor(GameConstructor);
+    executor.add_plugin(Game::default());
     executor.run()
 }
