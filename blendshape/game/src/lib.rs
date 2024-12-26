@@ -142,7 +142,7 @@ impl Plugin for Game {
         let mut blend_shape_names = BTreeSet::new();
         for surface in blend_shape.surfaces_mut() {
             let data = surface.data();
-            let data = data.lock();
+            let data = data.data_ref();
             if let Some(container) = data.blend_shapes_container.as_ref() {
                 for blend_shape in container.blend_shapes.iter() {
                     blend_shape_names.insert(blend_shape.name.clone());

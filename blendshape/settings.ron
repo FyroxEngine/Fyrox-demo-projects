@@ -29,6 +29,8 @@
             fxaa: true,
             use_parallax_mapping: false,
             use_bloom: true,
+            use_occlusion_culling: false,
+            use_light_occlusion_culling: false,
         ),
         z_near: 0.025,
         z_far: 128.0,
@@ -182,6 +184,8 @@
         script_editor: SystemDefault,
         max_history_entries: 512,
         generate_previews: true,
+        max_log_entries: 256,
+        style: Dark,
     ),
     debugging: (
         show_physics: true,
@@ -210,8 +214,6 @@
     ),
     camera: (
         speed: 10.0,
-        invert_dragging: false,
-        drag_speed: 0.01,
         zoom_speed: 0.5,
         zoom_range: (
             start: 0.0,
@@ -307,6 +309,24 @@
             code: KeyS,
             modifiers: (
                 alt: false,
+                shift: false,
+                control: true,
+                system: false,
+            ),
+        ),
+        save_scene_as: Some(
+            code: KeyS,
+            modifiers: (
+                alt: false,
+                shift: true,
+                control: true,
+                system: false,
+            ),
+        ),
+        save_all_scenes: Some(
+            code: KeyS,
+            modifiers: (
+                alt: true,
                 shift: false,
                 control: true,
                 system: false,
@@ -474,22 +494,21 @@
                 position: (0.048152775, 0.41118312, -0.96185064),
                 yaw: -0.020000981,
                 pitch: 0.3200001,
+                projection: Perspective((
+                    fov: 1.3089969,
+                    z_near: 0.025,
+                    z_far: 128.0,
+                )),
             ),
             node_infos: {
                 (
-                    index: 14,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
-                    index: 10,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
                     index: 2,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 4,
                     generation: 1,
                 ): (
                     is_expanded: true,
@@ -501,7 +520,25 @@
                     is_expanded: true,
                 ),
                 (
+                    index: 3,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
                     index: 13,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 10,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 14,
                     generation: 1,
                 ): (
                     is_expanded: true,
@@ -518,18 +555,6 @@
                 ): (
                     is_expanded: true,
                 ),
-                (
-                    index: 4,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
-                    index: 3,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
             },
         ),
     },
@@ -539,8 +564,9 @@
         ],
     ),
     windows: (
-        window_position: (0.0, 0.0),
-        window_size: (2560.0, 1377.0),
+        window_position: (-7.0, 0.0),
+        window_size: (1278.0, 1368.0),
+        window_maximized: false,
         layout: None,
     ),
 )
