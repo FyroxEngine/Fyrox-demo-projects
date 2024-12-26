@@ -1,4 +1,4 @@
-use fyrox::graph::{BaseSceneGraph, SceneGraph};
+use fyrox::graph::{BaseSceneGraph, SceneGraph, SceneGraphNode};
 use fyrox::{
     core::{
         algebra::{UnitQuaternion, Vector3},
@@ -97,7 +97,7 @@ impl ScriptTrait for Player {
             .scene
             .graph
             .try_get(*self.state_machine)
-            .and_then(|node| node.query_component_ref::<AnimationBlendingStateMachine>())
+            .and_then(|node| node.component_ref::<AnimationBlendingStateMachine>())
         {
             if let Some(root_motion) = state_machine.machine().pose().root_motion() {
                 velocity = transform
@@ -174,7 +174,7 @@ impl ScriptTrait for Player {
             .scene
             .graph
             .try_get_mut(*self.state_machine)
-            .and_then(|node| node.query_component_mut::<AnimationBlendingStateMachine>())
+            .and_then(|node| node.component_mut::<AnimationBlendingStateMachine>())
         {
             let moving =
                 self.walk_left || self.walk_right || self.walk_forward || self.walk_backward;

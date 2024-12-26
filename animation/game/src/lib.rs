@@ -22,7 +22,7 @@ use std::path::Path;
 
 mod player;
 
-#[derive(Default, Debug, Reflect, Visit)]
+#[derive(Default, Debug, Visit, Reflect)]
 pub struct Game {
     scene: Handle<Scene>,
     progress_bar: Handle<UiNode>,
@@ -113,25 +113,20 @@ impl Plugin for Game {
     }
 
     fn update(&mut self, context: &mut PluginContext) {
+        let ui = context.user_interfaces.first();
         let progress = context.resource_manager.state().loading_progress() as f32 / 100.0;
-        context
-            .user_interfaces
-            .first()
-            .send_message(ProgressBarMessage::progress(
-                self.progress_bar,
-                MessageDirection::ToWidget,
-                progress,
-            ));
+        ui.send_message(ProgressBarMessage::progress(
+            self.progress_bar,
+            MessageDirection::ToWidget,
+            progress,
+        ));
 
         if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
-            context
-                .user_interfaces
-                .first()
-                .send_message(TextMessage::text(
-                    self.debug_text,
-                    MessageDirection::ToWidget,
-                    format!("{}", graphics_context.renderer.get_statistics()),
-                ))
+            ui.send_message(TextMessage::text(
+                self.debug_text,
+                MessageDirection::ToWidget,
+                format!("{}", graphics_context.renderer.get_statistics()),
+            ))
         }
     }
 
