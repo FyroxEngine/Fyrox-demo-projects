@@ -571,6 +571,7 @@ impl Interface {
                                         0,
                                         true,
                                         Default::default(),
+                                        120.0,
                                     ))
                                     .build(ctx);
                                 quality_inspector
@@ -702,7 +703,7 @@ impl Interface {
                                         "Border - container widget with different \
                                         border thicknesses",
                                     ))
-                                    .with_foreground(Brush::Solid(Color::opaque(0, 162, 232)))
+                                    .with_foreground(Brush::Solid(Color::opaque(0, 162, 232)).into())
                                     .with_child(
                                         TextBuilder::new(WidgetBuilder::new())
                                             .with_text(
@@ -717,7 +718,7 @@ impl Interface {
                                 top: 1.0,
                                 right: 2.0,
                                 bottom: 1.0,
-                            })
+                            }.into())
                             .build(ctx),
                         )
                         .with_child(

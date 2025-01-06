@@ -18,6 +18,7 @@ fn main() {
             window_attributes,
             vsync: true,
             msaa_sample_count: Some(4),
+            graphics_server_constructor: Default::default(),
         },
     );
     executor.add_plugin(Game::default());
