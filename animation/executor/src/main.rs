@@ -10,8 +10,9 @@ fn main() {
     window_attributes.inner_size = Some(LogicalSize::new(1280.0, 720.0).into());
     window_attributes.title = "Animation".to_string();
     let mut executor = Executor::from_params(
-        EventLoop::new().unwrap(),
+        EventLoop::new().ok(),
         GraphicsContextParams {
+            named_objects: false,
             window_attributes,
             vsync: false,
             msaa_sample_count: None,

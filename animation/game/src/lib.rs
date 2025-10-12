@@ -23,6 +23,7 @@ use std::path::Path;
 mod player;
 
 #[derive(Default, Debug, Visit, Reflect)]
+#[reflect(non_cloneable)]
 pub struct Game {
     scene: Handle<Scene>,
     progress_bar: Handle<UiNode>,
@@ -63,7 +64,7 @@ impl Plugin for Game {
         context
             .resource_manager
             .state()
-            .loaders
+            .loaders.lock()
             .find_mut::<TextureLoader>()
             .unwrap()
             .default_import_options = TextureImportOptions::default()
