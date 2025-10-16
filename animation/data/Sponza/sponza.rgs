@@ -9888,11 +9888,11 @@ __ROOT__[]
 										}
 										ScatterFactor[Value<vec3f32:0.03; 0.03; 0.03>Flags<u8:1>]{}
 										ScatterEnabled[Value<bool:true>Flags<u8:1>]{}
-										Intensity[Value<f32:1>Flags<u8:1>]{}
+										Intensity[Value<f32:2.3>Flags<u8:1>]{}
 									}
 									CsmOptions[Flags<u8:1>]
 									{
-										Value[ShadowBias<f32:0.00025>]
+										Value[ShadowBias<f32:0.001>]
 										{
 											SplitOptions[Id<u32:0>]
 											{
@@ -9967,6 +9967,14 @@ __ROOT__[]
 									{
 										Value[Id<u32:0>]{}
 									}
+									AmbientLightingColor[Flags<u8:1>]
+									{
+										Value[R<u8:60>G<u8:60>B<u8:60>A<u8:255>]{}
+									}
+									EnvironmentLightingSource[Flags<u8:1>]
+									{
+										Value[Id<u32:1>]{}
+									}
 									RenderTarget[]
 									{
 										State[Id<u64:27>]
@@ -10003,7 +10011,7 @@ __ROOT__[]
 						{
 							ArcData[Paused<bool:false>]
 							{
-								Listener[Basis<mat3:-0.99776447; -0.0000000018626451; 0.066829614; 0.030313672; 0.8912072; 0.4525824; 0.05955903; -0.45359644; 0.8892148>Position<vec3f32:-0.26089525; 5.136443; -2.8814034>]{}
+								Listener[Basis<mat3:-0.9326364; 0; 0.36081758; 0.17006366; 0.88195765; 0.43957826; 0.31822583; -0.47132865; 0.8225458>Position<vec3f32:-0.6597071; 4.8757896; -6.391352>]{}
 								Sources[]
 								{
 									Records[Length<u32:0>]{}
