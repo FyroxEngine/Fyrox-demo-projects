@@ -1,12 +1,14 @@
 //! Game project.
+use fyrox::core::ComponentProvider;
+use fyrox::graph::SceneGraph;
 use fyrox::{
     core::{
         algebra::{Vector2, Vector3},
         pool::Handle,
         reflect::prelude::*,
+        type_traits::prelude::*,
         visitor::prelude::*,
         TypeUuidProvider,
-        type_traits::prelude::*
     },
     engine::GraphicsContext,
     event::{ElementState, Event, WindowEvent},
@@ -28,10 +30,8 @@ use fyrox::{
     script::{ScriptContext, ScriptTrait},
 };
 use std::path::Path;
-use fyrox::core::ComponentProvider;
-use fyrox::graph::SceneGraph;
 
-#[derive(Visit, Reflect, Debug, Default)]
+#[derive(Visit, Reflect, Debug, Default, Clone)]
 pub struct Game {
     scene: Handle<Scene>,
     debug_text: Handle<UiNode>,
@@ -53,37 +53,53 @@ impl Plugin for Game {
             UserInterface::load_from_file("data/menu.ui", ctx.resource_manager.clone()),
             |result, game: &mut Game, ctx| {
                 *ctx.user_interfaces.first_mut() = result.unwrap();
-                game.new_game = ctx.user_interfaces.first().find_handle_by_name_from_root("NewGame");
-                game.exit = ctx.user_interfaces.first().find_handle_by_name_from_root("Exit");
-                game.debug_text = ctx.user_interfaces.first().find_handle_by_name_from_root("DebugText");
+                game.new_game = ctx
+                    .user_interfaces
+                    .first()
+                    .find_handle_by_name_from_root("NewGame");
+                game.exit = ctx
+                    .user_interfaces
+                    .first()
+                    .find_handle_by_name_from_root("Exit");
+                game.debug_text = ctx
+                    .user_interfaces
+                    .first()
+                    .find_handle_by_name_from_root("DebugText");
             },
         );
     }
 
     fn update(&mut self, context: &mut PluginContext) {
         if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
-            context.user_interfaces.first().send_message(TextMessage::text(
-                self.debug_text,
-                MessageDirection::ToWidget,
-                format!("{}", graphics_context.renderer.get_statistics()),
-            ));
+            context
+                .user_interfaces
+                .first()
+                .send_message(TextMessage::text(
+                    self.debug_text,
+                    MessageDirection::ToWidget,
+                    format!("{}", graphics_context.renderer.get_statistics()),
+                ));
         }
     }
 
-    fn on_ui_message(&mut self, context: &mut PluginContext, message: &UiMessage) {
+    fn on_ui_message(
+        &mut self,
+        context: &mut PluginContext,
+        message: &UiMessage,
+        _ui_handle: Handle<UserInterface>,
+    ) {
         if let Some(ButtonMessage::Click) = message.data() {
             if message.destination() == self.new_game {
                 context
-                    .user_interfaces.first()
+                    .user_interfaces
+                    .first()
                     .send_message(WidgetMessage::visibility(
                         context.user_interfaces.first().root(),
                         MessageDirection::ToWidget,
                         false,
                     ));
             } else if message.destination() == self.exit {
-                if let Some(window_target) = context.window_target {
-                    window_target.exit();
-                }
+                context.loop_controller.exit();
             }
         }
     }
