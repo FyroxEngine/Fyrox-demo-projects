@@ -27,8 +27,6 @@
     "2927590d-d705-4599-815b-902aa5523f8f": "data/Sponza/Materials/curtain_green.material",
     "2af5febc-02a6-4371-8ad8-d8638dd0230d": "data/Sponza/Textures/Column_C/Column_C_Height.tiff",
     "2b14a26f-cf52-4980-b45d-6654a81d2c10": "data/Sponza/Textures/Flagpoles/Flagpoles_AO.tiff",
-    "2cb9638f-03b8-413d-96c7-a4199f1a7090": "data/Sponza/Sphere.fbx",
-    "2eaba9ca-0eb8-41e9-9b37-0178657da01c": "data/Sponza/Textures/Special/white.png",
     "3107eb0f-b38c-40b7-aa98-ed368f756e22": "data/Sponza/Textures/Bricks/Bricks_Diffuse.tif",
     "31d28a48-cc7e-40a7-866e-b5f1afeff2a9": "data/Sponza/Textures/Ceiling/Ceiling_AO.tiff",
     "31eac88f-afae-4a2a-9d13-0a9c49d58e46": "data/Sponza/Textures/Fabrics/Fabric_Curtain_AO.tiff",
@@ -141,7 +139,6 @@
     "f1c80534-4d7f-48fc-ba83-c1582e1afeee": "data/Sponza/Textures/Bricks/Bricks_AO.tiff",
     "f4a82ddf-d1d8-4e93-aa2e-23b78ef9650f": "data/Sponza/Textures/Ivy/Ivy_Diffuse_Normal.tiff",
     "f6aba7b0-394d-4365-a7dc-4c9f52e11e74": "data/Sponza/sponza.rgs",
-    "f9b51cf9-6f0e-41fd-8fdf-8b9d8c9135c3": "data/Sponza/sponza.rgs",
     "fcd2e6b6-48b4-431a-a463-338aea0e5a75": "data/Sponza/Textures/Vase_Round_Plants/Vase_Round_Plants_Roughness.tif",
     "feb42645-8196-4b32-a63a-fb546c4a9cd3": "data/Sponza/Textures/Floor/Floor_AO.tif",
 }
