@@ -1,5 +1,6 @@
 //! Game project.
 use fyrox::graph::SceneGraph;
+use fyrox::gui::UserInterface;
 use fyrox::keyboard::PhysicalKey;
 use fyrox::{
     core::{
@@ -26,13 +27,13 @@ use fyrox::{
 };
 use std::{collections::BTreeSet, path::Path};
 
-#[derive(Default, Debug, Reflect, Visit)]
+#[derive(Default, Debug, Clone, Reflect, Visit)]
 struct InputController {
     rotate_left: bool,
     rotate_right: bool,
 }
 
-#[derive(Debug, Visit, Reflect, Default)]
+#[derive(Debug, Visit, Reflect, Clone, Default)]
 pub struct Game {
     scene: Handle<Scene>,
     model_handle: Handle<Node>,
@@ -104,7 +105,12 @@ impl Plugin for Game {
         }
     }
 
-    fn on_ui_message(&mut self, context: &mut PluginContext, message: &UiMessage) {
+    fn on_ui_message(
+        &mut self,
+        context: &mut PluginContext,
+        message: &UiMessage,
+        _ui_handle: Handle<UserInterface>,
+    ) {
         if let Some(ScrollBarMessage::Value(value)) = message.data() {
             if message.direction() == MessageDirection::FromWidget {
                 for (name, slider) in self.sliders.iter() {
