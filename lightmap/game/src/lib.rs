@@ -2,7 +2,7 @@
 use fyrox::core::{reflect::prelude::*, visitor::prelude::*};
 use fyrox::plugin::{Plugin, PluginContext, PluginRegistrationContext};
 
-#[derive(Visit, Reflect, Default, Debug)]
+#[derive(Visit, Reflect, Clone, Default, Debug)]
 pub struct Game;
 
 impl Plugin for Game {
