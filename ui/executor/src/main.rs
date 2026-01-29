@@ -13,12 +13,13 @@ fn main() {
     window_attributes.title = "User Interface".to_string();
     window_attributes.resizable = true;
     let mut executor = Executor::from_params(
-        EventLoop::new().unwrap(),
+        EventLoop::new().ok(),
         GraphicsContextParams {
             window_attributes,
             vsync: true,
             msaa_sample_count: Some(4),
             graphics_server_constructor: Default::default(),
+            named_objects: false,
         },
     );
     executor.add_plugin(Game::default());

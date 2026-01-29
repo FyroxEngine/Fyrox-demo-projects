@@ -1,5 +1,7 @@
 //! Game project.
 use fyrox::graph::SceneGraph;
+use fyrox::gui::inspector::InspectorContextArgs;
+use fyrox::gui::UserInterface;
 use fyrox::{
     asset::manager::ResourceManager,
     core::{
@@ -64,7 +66,7 @@ use std::sync::Arc;
 
 pub mod custom;
 
-#[derive(Visit, Default, Reflect, Debug)]
+#[derive(Visit, Default, Clone, Reflect, Debug)]
 pub struct Game {
     scene: Handle<Scene>,
     #[visit(skip)]
@@ -99,7 +101,12 @@ impl Plugin for Game {
         self.interface = Some(Interface::new(&mut context));
     }
 
-    fn on_ui_message(&mut self, context: &mut PluginContext, message: &UiMessage) {
+    fn on_ui_message(
+        &mut self,
+        context: &mut PluginContext,
+        message: &UiMessage,
+        _ui_handle: Handle<UserInterface>,
+    ) {
         if let Some(interface) = self.interface.as_mut() {
             if let Some(ScrollBarMessage::Value(value)) = message.data() {
                 if message.direction() == MessageDirection::FromWidget {
@@ -236,7 +243,7 @@ impl Plugin for Game {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Interface {
     debug_text: Handle<UiNode>,
     yaw: Handle<UiNode>,
@@ -563,15 +570,19 @@ impl Interface {
                             .with_content({
                                 quality_inspector = InspectorBuilder::new(WidgetBuilder::new())
                                     .with_context(InspectorContext::from_object(
-                                        &quality_settings,
-                                        ctx,
-                                        Arc::new(container),
-                                        None,
-                                        u64::MAX,
-                                        0,
-                                        true,
-                                        Default::default(),
-                                        120.0,
+                                        InspectorContextArgs {
+                                            object: &quality_settings,
+                                            ctx,
+                                            definition_container: Arc::new(container),
+                                            environment: None,
+                                            sync_flag: u64::MAX,
+                                            layer_index: 0,
+                                            generate_property_string_values: true,
+                                            filter: Default::default(),
+                                            name_column_width: 120.0,
+                                            base_path: Default::default(),
+                                            has_parent_object: false,
+                                        },
                                     ))
                                     .build(ctx);
                                 quality_inspector
