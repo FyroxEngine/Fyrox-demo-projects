@@ -1,18 +1,21 @@
 //! Game project.
 use fyrox::core::{reflect::prelude::*, visitor::prelude::*};
+use fyrox::plugin::error::GameResult;
 use fyrox::plugin::{Plugin, PluginContext, PluginRegistrationContext};
 
 #[derive(Visit, Reflect, Clone, Default, Debug)]
 pub struct Game;
 
 impl Plugin for Game {
-    fn register(&self, context: PluginRegistrationContext) {
+    fn register(&self, context: PluginRegistrationContext) -> GameResult {
         fyrox_scripts::register(&context.serialization_context.script_constructors);
+        Ok(())
     }
 
-    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) {
+    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) -> GameResult {
         context
             .async_scene_loader
-            .request(scene_path.unwrap_or("data/Sponza.rgs"));
+            .request(scene_path.unwrap_or("data/Sponza/sponza.rgs"));
+        Ok(())
     }
 }
