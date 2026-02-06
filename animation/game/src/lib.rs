@@ -5,15 +5,14 @@ use fyrox::{
     engine::GraphicsContext,
     event::{Event, WindowEvent},
     gui::{
-        grid::{Column, GridBuilder, Row},
-        message::MessageDirection,
-        progress_bar::{ProgressBarBuilder, ProgressBarMessage},
+        grid::{Column, Grid, GridBuilder, Row},
+        progress_bar::{ProgressBar, ProgressBarBuilder, ProgressBarMessage},
         stack_panel::StackPanelBuilder,
-        text::{TextBuilder, TextMessage},
+        text::{Text, TextBuilder, TextMessage},
         widget::{WidgetBuilder, WidgetMessage},
-        HorizontalAlignment, Thickness, UiNode, VerticalAlignment,
+        HorizontalAlignment, Thickness, VerticalAlignment,
     },
-    plugin::{Plugin, PluginContext, PluginRegistrationContext},
+    plugin::{error::GameResult, Plugin, PluginContext, PluginRegistrationContext},
     renderer::QualitySettings,
     resource::texture::{loader::TextureLoader, CompressionOptions, TextureImportOptions},
     scene::Scene,
@@ -26,45 +25,34 @@ mod player;
 #[reflect(non_cloneable)]
 pub struct Game {
     scene: Handle<Scene>,
-    progress_bar: Handle<UiNode>,
-    overlay_grid: Handle<UiNode>,
-    debug_text: Handle<UiNode>,
+    progress_bar: Handle<ProgressBar>,
+    overlay_grid: Handle<Grid>,
+    debug_text: Handle<Text>,
 }
 
 impl Game {
     fn handle_resize(&self, context: &mut PluginContext, new_size: Vector2<f32>) {
-        context
-            .user_interfaces
-            .first()
-            .send_message(WidgetMessage::width(
-                self.overlay_grid,
-                MessageDirection::ToWidget,
-                new_size.x,
-            ));
-        context
-            .user_interfaces
-            .first()
-            .send_message(WidgetMessage::height(
-                self.overlay_grid,
-                MessageDirection::ToWidget,
-                new_size.y,
-            ));
+        let ui = context.user_interfaces.first();
+        ui.send(self.overlay_grid, WidgetMessage::Width(new_size.x));
+        ui.send(self.overlay_grid, WidgetMessage::Height(new_size.y));
     }
 }
 
 impl Plugin for Game {
-    fn register(&self, context: PluginRegistrationContext) {
+    fn register(&self, context: PluginRegistrationContext) -> GameResult {
         context
             .serialization_context
             .script_constructors
             .add::<Player>("Player");
+        Ok(())
     }
 
-    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) {
+    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) -> GameResult {
         context
             .resource_manager
             .state()
-            .loaders.lock()
+            .loaders
+            .lock()
             .find_mut::<TextureLoader>()
             .unwrap()
             .default_import_options = TextureImportOptions::default()
@@ -73,7 +61,7 @@ impl Plugin for Game {
 
         context
             .async_scene_loader
-            .request(scene_path.unwrap_or("data/scene.rgs"));
+            .request(scene_path.unwrap_or("data/Sponza/sponza.rgs"));
 
         let ctx = &mut context.user_interfaces.first_mut().build_ctx();
         self.overlay_grid = GridBuilder::new(
@@ -111,27 +99,26 @@ impl Plugin for Game {
         .build(ctx);
 
         self.debug_text = TextBuilder::new(WidgetBuilder::new()).build(ctx);
+
+        Ok(())
     }
 
-    fn update(&mut self, context: &mut PluginContext) {
+    fn update(&mut self, context: &mut PluginContext) -> GameResult {
         let ui = context.user_interfaces.first();
         let progress = context.resource_manager.state().loading_progress() as f32 / 100.0;
-        ui.send_message(ProgressBarMessage::progress(
-            self.progress_bar,
-            MessageDirection::ToWidget,
-            progress,
-        ));
+        ui.send(self.progress_bar, ProgressBarMessage::Progress(progress));
 
         if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
-            ui.send_message(TextMessage::text(
+            ui.send(
                 self.debug_text,
-                MessageDirection::ToWidget,
-                format!("{}", graphics_context.renderer.get_statistics()),
-            ))
+                TextMessage::Text(format!("{}", graphics_context.renderer.get_statistics())),
+            )
         }
+
+        Ok(())
     }
 
-    fn on_os_event(&mut self, event: &Event<()>, mut context: PluginContext) {
+    fn on_os_event(&mut self, event: &Event<()>, mut context: PluginContext) -> GameResult {
         match event {
             Event::WindowEvent { event, .. } => {
                 if let WindowEvent::Resized(size) = event {
@@ -143,15 +130,13 @@ impl Plugin for Game {
             }
             _ => (),
         }
+        Ok(())
     }
 
-    fn on_graphics_context_initialized(&mut self, mut context: PluginContext) {
+    fn on_graphics_context_initialized(&mut self, mut context: PluginContext) -> GameResult {
         let graphics_context = context.graphics_context.as_initialized_mut();
 
-        let mut quality_settings = QualitySettings::high();
-
-        quality_settings.point_shadows_distance = 6.0;
-        quality_settings.spot_shadows_distance = 6.0;
+        let mut quality_settings = QualitySettings::ultra();
 
         Log::verify(
             graphics_context
@@ -164,6 +149,8 @@ impl Plugin for Game {
             &mut context,
             Vector2::new(inner_size.width as f32, inner_size.height as f32),
         );
+
+        Ok(())
     }
 
     fn on_scene_loaded(
@@ -172,16 +159,14 @@ impl Plugin for Game {
         scene: Handle<Scene>,
         _data: &[u8],
         context: &mut PluginContext,
-    ) {
+    ) -> GameResult {
         self.scene = scene;
 
         context
             .user_interfaces
             .first()
-            .send_message(WidgetMessage::visibility(
-                self.overlay_grid,
-                MessageDirection::ToWidget,
-                false,
-            ));
+            .send(self.overlay_grid, WidgetMessage::Visibility(false));
+
+        Ok(())
     }
 }

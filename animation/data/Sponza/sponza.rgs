@@ -1,4 +1,4 @@
-FTAX:2;
+FTAX:0;
 __ROOT__[]
 {
 	Scene[]
@@ -126,19 +126,19 @@ __ROOT__[]
 										}
 										ScatterFactor[Value<vec3f32:0.03; 0.03; 0.03>Flags<u8:1>]{}
 										ScatterEnabled[Value<bool:true>Flags<u8:1>]{}
-										Intensity[Value<f32:2.3>Flags<u8:1>]{}
+										Intensity[Value<f32:5>Flags<u8:1>]{}
 									}
 									CsmOptions[Flags<u8:1>]
 									{
-										Value[ShadowBias<f32:0.001>]
+										Value[ShadowBias<f32:0.0005>]
 										{
 											SplitOptions[Id<u32:0>]
 											{
 												FarPlanes[Length<u32:3>]
 												{
 													Item0[ItemData<f32:5>]{}
-													Item1[ItemData<f32:25>]{}
-													Item2[ItemData<f32:64>]{}
+													Item1[ItemData<f32:15>]{}
+													Item2[ItemData<f32:30>]{}
 												}
 											}
 										}
@@ -207,7 +207,7 @@ __ROOT__[]
 									}
 									AmbientLightingColor[Flags<u8:1>]
 									{
-										Value[R<u8:60>G<u8:60>B<u8:60>A<u8:255>]{}
+										Value[R<u8:116>G<u8:116>B<u8:116>A<u8:255>]{}
 									}
 									EnvironmentLightingSource[Flags<u8:1>]
 									{
@@ -10621,7 +10621,7 @@ __ROOT__[]
 						{
 							ArcData[Paused<bool:false>]
 							{
-								Listener[Basis<mat3:-0.94793034; 0; -0.31847733; -0.18265331; 0.81919116; 0.54365754; -0.26089385; -0.5735205; 0.7765362>Position<vec3f32:0.22142732; 3.2393217; -4.8668666>]{}
+								Listener[Basis<mat3:0.9593899; 0; -0.28208342; -0.019953726; 0.997495; -0.06786433; -0.2813768; -0.07073696; -0.95698667>Position<vec3f32:0.25342512; 0.7055167; -7.9683914>]{}
 								Sources[]
 								{
 									Records[Length<u32:0>]{}
@@ -10682,11 +10682,12 @@ __ROOT__[]
 				Gravity[Value<vec2f32:0; -9.81>Flags<u8:1>]{}
 			}
 			Lightmap[IsSome<u8:0>]{}
+			UserData[TypeUuid<uuid:00000000-0000-0000-0000-000000000000>]{}
 		}
 		Enabled[Value<bool:true>Flags<u8:1>]{}
 		RenderingOptions[Flags<u8:1>]
 		{
-			Value[]
+			Value[EnvironmentLightingBrightness<f32:1>]
 			{
 				RenderTarget[IsSome<u8:0>]{}
 				ClearColor[IsSome<u8:0>]{}
