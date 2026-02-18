@@ -1,7 +1,17 @@
 //! Game project.
+use fyrox::core::pool::HandlesVecExtension;
 use fyrox::graph::SceneGraph;
-use fyrox::gui::inspector::InspectorContextArgs;
+use fyrox::gui::button::Button;
+use fyrox::gui::decorator::Decorator;
+use fyrox::gui::image::Image;
+use fyrox::gui::inspector::{Inspector, InspectorContextArgs};
+use fyrox::gui::messagebox::MessageBox;
+use fyrox::gui::scroll_bar::ScrollBar;
+use fyrox::gui::text::Text;
+use fyrox::gui::tree::{Tree, TreeRoot};
 use fyrox::gui::UserInterface;
+use fyrox::plugin::error::GameResult;
+use fyrox::plugin::SceneLoaderResult;
 use fyrox::{
     asset::manager::ResourceManager,
     core::{
@@ -53,7 +63,7 @@ use fyrox::{
         widget::WidgetMessage,
         window::{WindowBuilder, WindowTitle},
         wrap_panel::WrapPanelBuilder,
-        BuildContext, HorizontalAlignment, Orientation, Thickness, UiNode, VerticalAlignment,
+        BuildContext, HorizontalAlignment, Orientation, Thickness, VerticalAlignment,
     },
     plugin::{Plugin, PluginContext},
     rand::{thread_rng, Rng},
@@ -61,7 +71,6 @@ use fyrox::{
     resource::texture::Texture,
     scene::{node::Node, Scene},
 };
-use std::path::Path;
 use std::sync::Arc;
 
 pub mod custom;
@@ -75,30 +84,72 @@ pub struct Game {
     paladin: Handle<Node>,
 }
 
+impl Game {
+    fn on_scene_loading_result(
+        &mut self,
+        result: SceneLoaderResult,
+        ctx: &mut PluginContext,
+    ) -> GameResult {
+        self.scene = ctx.scenes.add(result?.payload);
+
+        let scene_ref = &mut ctx.scenes[self.scene];
+        if let Some((handle, paladin)) = scene_ref.graph.find_by_name_from_root("paladin.fbx") {
+            if let Some(interface) = self.interface.as_ref() {
+                ctx.user_interfaces.first().send(
+                    interface.yaw,
+                    ScrollBarMessage::Value(
+                        paladin
+                            .local_transform()
+                            .rotation()
+                            .euler_angles()
+                            .2
+                            .to_degrees(),
+                    ),
+                );
+
+                ctx.user_interfaces.first().send(
+                    interface.scale,
+                    ScrollBarMessage::Value(paladin.local_transform().scale().x),
+                );
+            }
+
+            self.paladin = handle;
+        }
+        Ok(())
+    }
+}
+
 impl Plugin for Game {
-    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) {
+    fn init(&mut self, scene_path: Option<&str>, mut context: PluginContext) -> GameResult {
         context
-            .async_scene_loader
-            .request(scene_path.unwrap_or("data/scene.rgs"));
+            .user_interfaces
+            .add(UserInterface::new(Vector2::repeat(100.0)));
+        context.load_scene(
+            scene_path.unwrap_or("data/scene.rgs"),
+            false,
+            |result, game: &mut Game, ctx| game.on_scene_loading_result(result, ctx),
+        );
+        Ok(())
     }
 
-    fn update(&mut self, context: &mut PluginContext) {
+    fn update(&mut self, context: &mut PluginContext) -> GameResult {
         if let Some(interface) = self.interface.as_ref() {
             if let GraphicsContext::Initialized(ctx) = context.graphics_context {
-                context
-                    .user_interfaces
-                    .first()
-                    .send_message(TextMessage::text(
-                        interface.debug_text,
-                        MessageDirection::ToWidget,
-                        format!("FPS: {}", ctx.renderer.get_statistics().frames_per_second),
-                    ))
+                context.user_interfaces.first().send(
+                    interface.debug_text,
+                    TextMessage::Text(format!(
+                        "FPS: {}",
+                        ctx.renderer.get_statistics().frames_per_second
+                    )),
+                )
             }
         }
+        Ok(())
     }
 
-    fn on_graphics_context_initialized(&mut self, mut context: PluginContext) {
+    fn on_graphics_context_initialized(&mut self, mut context: PluginContext) -> GameResult {
         self.interface = Some(Interface::new(&mut context));
+        Ok(())
     }
 
     fn on_ui_message(
@@ -106,14 +157,15 @@ impl Plugin for Game {
         context: &mut PluginContext,
         message: &UiMessage,
         _ui_handle: Handle<UserInterface>,
-    ) {
+    ) -> GameResult {
         if let Some(interface) = self.interface.as_mut() {
             if let Some(ScrollBarMessage::Value(value)) = message.data() {
                 if message.direction() == MessageDirection::FromWidget {
                     if let Some(paladin) = context
                         .scenes
                         .try_get_mut(self.scene)
-                        .and_then(|s| s.graph.try_get_mut(self.paladin))
+                        .ok()
+                        .and_then(|s| s.graph.try_get_mut(self.paladin).ok())
                     {
                         // Some of our scroll bars has changed its value. Check which one.
                         // Each message has source - a handle of UI element that created this message.
@@ -141,19 +193,11 @@ impl Plugin for Game {
                     context
                         .user_interfaces
                         .first()
-                        .send_message(ScrollBarMessage::value(
-                            interface.scale,
-                            MessageDirection::ToWidget,
-                            0.005,
-                        ));
+                        .send(interface.scale, ScrollBarMessage::Value(0.005));
                     context
                         .user_interfaces
                         .first()
-                        .send_message(ScrollBarMessage::value(
-                            interface.yaw,
-                            MessageDirection::ToWidget,
-                            180.0f32,
-                        ));
+                        .send(interface.yaw, ScrollBarMessage::Value(180.0f32));
                 } else if message.destination() == interface.press_me_button {
                     interface.message_box = MessageBoxBuilder::new(
                         WindowBuilder::new(
@@ -166,15 +210,13 @@ impl Plugin for Game {
                     .with_buttons(MessageBoxButtons::Ok)
                     .build(&mut context.user_interfaces.first_mut().build_ctx());
 
-                    context
-                        .user_interfaces
-                        .first()
-                        .send_message(MessageBoxMessage::open(
-                            interface.message_box,
-                            MessageDirection::ToWidget,
-                            None,
-                            None,
-                        ));
+                    context.user_interfaces.first().send(
+                        interface.message_box,
+                        MessageBoxMessage::Open {
+                            text: None,
+                            title: None,
+                        },
+                    );
                 }
             } else if let Some(InspectorMessage::PropertyChanged(prop)) = message.data() {
                 if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
@@ -193,65 +235,23 @@ impl Plugin for Game {
                     context
                         .user_interfaces
                         .first()
-                        .send_message(WidgetMessage::remove(
-                            interface.message_box,
-                            MessageDirection::ToWidget,
-                        ));
+                        .send(interface.message_box, WidgetMessage::Remove);
                 }
             }
         }
-    }
-
-    fn on_scene_loaded(
-        &mut self,
-        _path: &Path,
-        scene: Handle<Scene>,
-        _data: &[u8],
-        context: &mut PluginContext,
-    ) {
-        self.scene = scene;
-
-        let scene_ref = &mut context.scenes[scene];
-        if let Some((handle, paladin)) = scene_ref.graph.find_by_name_from_root("paladin.fbx") {
-            if let Some(interface) = self.interface.as_ref() {
-                context
-                    .user_interfaces
-                    .first()
-                    .send_message(ScrollBarMessage::value(
-                        interface.yaw,
-                        MessageDirection::ToWidget,
-                        paladin
-                            .local_transform()
-                            .rotation()
-                            .euler_angles()
-                            .2
-                            .to_degrees(),
-                    ));
-
-                context
-                    .user_interfaces
-                    .first()
-                    .send_message(ScrollBarMessage::value(
-                        interface.scale,
-                        MessageDirection::ToWidget,
-                        paladin.local_transform().scale().x,
-                    ));
-            }
-
-            self.paladin = handle;
-        }
+        Ok(())
     }
 }
 
 #[derive(Debug, Clone)]
 struct Interface {
-    debug_text: Handle<UiNode>,
-    yaw: Handle<UiNode>,
-    scale: Handle<UiNode>,
-    reset: Handle<UiNode>,
-    quality_inspector: Handle<UiNode>,
-    press_me_button: Handle<UiNode>,
-    message_box: Handle<UiNode>,
+    debug_text: Handle<Text>,
+    yaw: Handle<ScrollBar>,
+    scale: Handle<ScrollBar>,
+    reset: Handle<Button>,
+    quality_inspector: Handle<Inspector>,
+    press_me_button: Handle<Button>,
+    message_box: Handle<MessageBox>,
 }
 
 fn make_potions_images(
@@ -259,7 +259,7 @@ fn make_potions_images(
     resource_manager: &ResourceManager,
     w: usize,
     h: usize,
-) -> Vec<Handle<UiNode>> {
+) -> Vec<Handle<Image>> {
     let mut potions = Vec::new();
 
     for y in 0..h {
@@ -294,7 +294,10 @@ fn make_potions_images(
     potions
 }
 
-fn make_chests(ctx: &mut BuildContext, resource_manager: &ResourceManager) -> Vec<Handle<UiNode>> {
+fn make_chests(
+    ctx: &mut BuildContext,
+    resource_manager: &ResourceManager,
+) -> Vec<Handle<Decorator>> {
     let mut chests = Vec::new();
 
     let w = 8;
@@ -358,7 +361,7 @@ fn make_tree(
     h: usize,
     next: bool,
     resource_manager: &ResourceManager,
-) -> Handle<UiNode> {
+) -> Handle<Tree> {
     TreeBuilder::new(WidgetBuilder::new())
         .with_content(
             GridBuilder::new(
@@ -406,7 +409,7 @@ fn make_tree(
         .build(ctx)
 }
 
-fn make_tree_root(ctx: &mut BuildContext, resource_manager: &ResourceManager) -> Handle<UiNode> {
+fn make_tree_root(ctx: &mut BuildContext, resource_manager: &ResourceManager) -> Handle<TreeRoot> {
     let mut items = Vec::new();
 
     let w = 9;
@@ -575,7 +578,6 @@ impl Interface {
                                             ctx,
                                             definition_container: Arc::new(container),
                                             environment: None,
-                                            sync_flag: u64::MAX,
                                             layer_index: 0,
                                             generate_property_string_values: true,
                                             filter: Default::default(),
@@ -865,7 +867,7 @@ impl Interface {
                                         arbitrary widgets",
                                     )),
                             )
-                            .with_items(make_chests(ctx, &plugin_ctx.resource_manager))
+                            .with_items(make_chests(ctx, &plugin_ctx.resource_manager).to_base())
                             .build(ctx),
                         )
                         .with_child(
@@ -914,7 +916,7 @@ impl Interface {
                                     )),
                             )
                             .with_selected(2)
-                            .with_items(make_chests(ctx, &plugin_ctx.resource_manager))
+                            .with_items(make_chests(ctx, &plugin_ctx.resource_manager).to_base())
                             .build(ctx),
                         ),
                 )
@@ -935,12 +937,15 @@ impl Interface {
                         .with_child(
                             WrapPanelBuilder::new(
                                 WidgetBuilder::new()
-                                    .with_children(make_potions_images(
-                                        ctx,
-                                        &plugin_ctx.resource_manager,
-                                        6,
-                                        3,
-                                    ))
+                                    .with_children(
+                                        make_potions_images(
+                                            ctx,
+                                            &plugin_ctx.resource_manager,
+                                            6,
+                                            3,
+                                        )
+                                        .to_base(),
+                                    )
                                     .with_tooltip(make_simple_tooltip(
                                         ctx,
                                         "WrapPanel - stacks children either \
@@ -953,12 +958,15 @@ impl Interface {
                         .with_child(
                             StackPanelBuilder::new(
                                 WidgetBuilder::new()
-                                    .with_children(make_potions_images(
-                                        ctx,
-                                        &plugin_ctx.resource_manager,
-                                        4,
-                                        1,
-                                    ))
+                                    .with_children(
+                                        make_potions_images(
+                                            ctx,
+                                            &plugin_ctx.resource_manager,
+                                            4,
+                                            1,
+                                        )
+                                        .to_base(),
+                                    )
                                     .with_tooltip(make_simple_tooltip(
                                         ctx,
                                         "StackPanel - stacks children either \
@@ -973,12 +981,15 @@ impl Interface {
                                 WidgetBuilder::new()
                                     .with_width(300.0)
                                     .with_height(200.0)
-                                    .with_children(make_potions_images(
-                                        ctx,
-                                        &plugin_ctx.resource_manager,
-                                        6,
-                                        3,
-                                    ))
+                                    .with_children(
+                                        make_potions_images(
+                                            ctx,
+                                            &plugin_ctx.resource_manager,
+                                            6,
+                                            3,
+                                        )
+                                        .to_base(),
+                                    )
                                     .with_tooltip(make_simple_tooltip(
                                         ctx,
                                         "Canvas - allows children widgets \
