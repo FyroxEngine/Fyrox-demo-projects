@@ -1,11 +1,10 @@
-
 [package]
 name = "executor"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
 [dependencies]
 animation = { path = "../game" }
 
-[dependencies.fyrox ]
+[dependencies.fyrox]
 workspace = true

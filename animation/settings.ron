@@ -20,7 +20,7 @@
             spot_shadows_fade_out_range: 1.0,
             csm_settings: (
                 enabled: true,
-                size: 4096,
+                size: 2048,
                 precision: Full,
                 pcf: true,
             ),
@@ -32,15 +32,15 @@
             use_occlusion_culling: false,
             use_light_occlusion_culling: false,
             hdr_settings: (
-                use_hdr: false,
+                use_hdr: true,
                 luminance_calculation_method: DownSampling,
                 bloom_settings: (
                     use_bloom: true,
-                    threshold: 5.0,
+                    threshold: 1.01,
                 ),
             ),
         ),
-        z_near: 0.01,
+        z_near: 0.025,
         z_far: 128.0,
         draw_grid: true,
         gizmo_scale: 1.0,
@@ -186,6 +186,16 @@
                 ),
             ),
         ],
+        pc_build_targets: [
+            "default",
+        ],
+        wasm_build_targets: [
+            "wasm32-unknown-unknown",
+        ],
+        android_build_targets: [
+            "armv7-linux-androideabi",
+            "aarch64-linux-android",
+        ],
     ),
     general: (
         show_node_removal_dialog: true,
@@ -223,17 +233,14 @@
         instantiation_scale: (1.0, 1.0, 1.0),
     ),
     camera: (
-        speed: 1.0,
+        speed: 10.0,
         sensitivity: 1.0,
         zoom_speed: 0.5,
         zoom_range: (
             start: 0.0,
             end: 100.0,
         ),
-        exposure: Auto(
-            min_luminance: 0.035,
-            max_luminance: 10.0,
-        ),
+        exposure: Manual(1.0),
     ),
     navmesh: (
         draw_all: true,
@@ -506,85 +513,27 @@
     scene_settings: {
         "data/Sponza/sponza.rgs": (
             camera_settings: (
-                position: (-0.5907053, 0.4933058, -10.839352),
-                yaw: 28.560299,
-                pitch: 0.07079609,
-                projection: Perspective((
-                    fov: 1.3089969,
-                    z_near: 0.01,
-                    z_far: 128.0,
-                )),
-            ),
-            node_infos: {
-                (
-                    index: 228,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
-                    index: 2,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
-                    index: 1,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
-                    index: 222,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
-                    index: 344,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-            },
-        ),
-        "data/paladin/paladin.rgs": (
-            camera_settings: (
                 position: (0.0, 1.0, 0.0),
                 yaw: 0.0,
                 pitch: 0.0,
                 projection: Perspective((
                     fov: 1.3089969,
-                    z_near: 0.01,
+                    z_near: 0.025,
                     z_far: 128.0,
                 )),
             ),
-            node_infos: {
-                (
-                    index: 6,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-                (
-                    index: 7,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-            },
+            node_infos: {},
         ),
     },
     recent: (
         scenes: [
             "data/Sponza/sponza.rgs",
-            "data/paladin/paladin.rgs",
         ],
     ),
     windows: (
-        window_position: (-8.0, -8.0),
-        window_size: (2560.0, 1377.0),
-        window_maximized: true,
+        window_position: (1273.0, 0.0),
+        window_size: (1278.0, 1368.0),
+        window_maximized: false,
         layout: None,
     ),
 )
