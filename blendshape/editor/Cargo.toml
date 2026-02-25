@@ -1,14 +1,13 @@
-
 [package]
 name = "editor"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
 [dependencies]
 blendshape = { path = "../game" }
 
-[dependencies.fyrox ]
+[dependencies.fyrox]
 workspace = true
 
-[dependencies.fyroxed_base ]
+[dependencies.fyroxed_base]
 workspace = true
