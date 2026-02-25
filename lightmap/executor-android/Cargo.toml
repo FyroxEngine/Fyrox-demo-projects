@@ -1,7 +1,6 @@
-
 [package]
 name = "executor-android"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2021"
 
 [package.metadata.android]
@@ -14,5 +13,5 @@ crate-type = ["cdylib"]
 [dependencies]
 lightmap = { path = "../game" }
 
-[dependencies.fyrox ]
+[dependencies.fyrox]
 workspace = true

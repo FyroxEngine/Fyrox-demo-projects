@@ -12,10 +12,8 @@ impl Plugin for Game {
         Ok(())
     }
 
-    fn init(&mut self, scene_path: Option<&str>, context: PluginContext) -> GameResult {
-        context
-            .async_scene_loader
-            .request(scene_path.unwrap_or("data/Sponza/sponza.rgs"));
+    fn init(&mut self, scene_path: Option<&str>, mut context: PluginContext) -> GameResult {
+        context.load_scene_or_ui::<Game>(scene_path.unwrap_or("data/Sponza/sponza.rgs"));
         Ok(())
     }
 }
