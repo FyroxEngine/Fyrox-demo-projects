@@ -7,58 +7,51 @@ use fyrox::{
         visitor::prelude::*,
     },
     gui::{
-        border::BorderBuilder,
+        border::{Border, BorderBuilder},
         brush::Brush,
-        define_constructor, define_widget_deref,
-        message::{MessageDirection, UiMessage},
-        text::TextBuilder,
+        define_widget_deref,
+        message::{MessageData, UiMessage},
+        text::{Text, TextBuilder},
         widget::{Widget, WidgetBuilder, WidgetMessage},
         BuildContext, Control, HorizontalAlignment, Thickness, UiNode, UserInterface,
         VerticalAlignment,
     },
 };
-use std::ops::{Deref, DerefMut};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum MyButtonMessage {
     // A message, that will be emitted when our button is clicked.
     Click,
 }
-
-impl MyButtonMessage {
-    // A constructor for `Click` message.
-    define_constructor!(
-        MyButtonMessage:Click => fn click(), layout: false
-    );
-}
+impl MessageData for MyButtonMessage {}
 
 #[derive(Clone, Debug, Reflect, Visit, TypeUuidProvider, ComponentProvider)]
 #[type_uuid(id = "3392233e-dafb-42f6-a53d-92e3b7e554ad")]
 struct MyButton {
     widget: Widget,
-    border: Handle<UiNode>,
-    text: Handle<UiNode>,
+    border: Handle<Border>,
+    text: Handle<Text>,
 }
 
 define_widget_deref!(MyButton);
 
 impl MyButton {
     fn set_colors(&self, ui: &UserInterface, text_color: Color, border_color: Color) {
-        for (handle, color) in [(self.border, border_color), (self.text, text_color)] {
-            ui.send_message(WidgetMessage::foreground(
-                handle,
-                MessageDirection::ToWidget,
-                Brush::Solid(color).into(),
-            ));
-        }
+        ui.send(
+            self.border,
+            WidgetMessage::Foreground(Brush::Solid(border_color).into()),
+        );
+        ui.send(
+            self.text,
+            WidgetMessage::Foreground(Brush::Solid(text_color).into()),
+        );
 
         let mut border_color = Hsv::from(border_color);
         border_color.set_brightness(border_color.brightness() - 20.0);
-        ui.send_message(WidgetMessage::background(
+        ui.send(
             self.border,
-            MessageDirection::ToWidget,
-            Brush::Solid(border_color.into()).into(),
-        ));
+            WidgetMessage::Background(Brush::Solid(border_color.into()).into()),
+        );
     }
 }
 
@@ -75,10 +68,7 @@ impl Control for MyButton {
                 match msg {
                     WidgetMessage::MouseUp { .. } => {
                         // Send the message to outside world, saying that the button was clicked.
-                        ui.send_message(MyButtonMessage::click(
-                            self.handle(),
-                            MessageDirection::FromWidget,
-                        ));
+                        ui.post(self.handle(), MyButtonMessage::Click);
                         ui.release_mouse_capture();
                     }
                     WidgetMessage::MouseDown { .. } => {
