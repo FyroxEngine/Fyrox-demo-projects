@@ -1,4 +1,4 @@
-FTAX:2;
+FTAX:0;
 __ROOT__[]
 {
 	Scene[]
@@ -141,6 +141,7 @@ __ROOT__[]
 										Value[IsSome<u8:0>]{}
 									}
 									ColorGradingEnabled[Value<bool:false>Flags<u8:1>]{}
+									HdrAdaptationSpeed[Value<f32:0.5>Flags<u8:1>]{}
 								}
 							}
 						}
@@ -583,11 +584,12 @@ __ROOT__[]
 				Gravity[Value<vec2f32:0; -9.81>Flags<u8:1>]{}
 			}
 			Lightmap[IsSome<u8:0>]{}
+			UserData[TypeUuid<uuid:00000000-0000-0000-0000-000000000000>]{}
 		}
 		Enabled[Value<bool:true>Flags<u8:1>]{}
 		RenderingOptions[Flags<u8:1>]
 		{
-			Value[]
+			Value[EnvironmentLightingBrightness<f32:1>]
 			{
 				RenderTarget[IsSome<u8:0>]{}
 				ClearColor[IsSome<u8:0>]{}

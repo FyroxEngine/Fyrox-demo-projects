@@ -29,9 +29,16 @@
             light_scatter_enabled: true,
             fxaa: true,
             use_parallax_mapping: true,
-            use_bloom: true,
             use_occlusion_culling: false,
             use_light_occlusion_culling: false,
+            hdr_settings: (
+                use_hdr: true,
+                luminance_calculation_method: DownSampling,
+                bloom_settings: (
+                    use_bloom: true,
+                    threshold: 1.01,
+                ),
+            ),
         ),
         z_near: 0.025,
         z_far: 128.0,
@@ -179,10 +186,21 @@
                 ),
             ),
         ],
+        pc_build_targets: [
+            "default",
+        ],
+        wasm_build_targets: [
+            "wasm32-unknown-unknown",
+        ],
+        android_build_targets: [
+            "armv7-linux-androideabi",
+            "aarch64-linux-android",
+        ],
     ),
     general: (
         show_node_removal_dialog: true,
         suspend_unfocused_editor: true,
+        keep_editor_active: false,
         script_editor: SystemDefault,
         max_history_entries: 512,
         generate_previews: true,
@@ -222,6 +240,7 @@
             start: 0.0,
             end: 100.0,
         ),
+        exposure: Manual(1.0),
     ),
     navmesh: (
         draw_all: true,
