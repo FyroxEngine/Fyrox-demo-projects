@@ -222,7 +222,7 @@ impl Plugin for Game {
                 if let GraphicsContext::Initialized(graphics_context) = context.graphics_context {
                     if message.destination() == interface.quality_inspector {
                         let mut settings = graphics_context.renderer.get_quality_settings();
-                        PropertyAction::from_field_kind(&prop.value).apply(
+                        PropertyAction::from_field_action(&prop.action).apply(
                             &prop.path(),
                             &mut settings,
                             &mut |e| Log::verify(e),
