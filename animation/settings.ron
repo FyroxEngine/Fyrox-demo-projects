@@ -240,7 +240,10 @@
             start: 0.0,
             end: 100.0,
         ),
-        exposure: Manual(1.0),
+        exposure: Auto(
+            min_luminance: 0.05,
+            max_luminance: 1.0,
+        ),
     ),
     navmesh: (
         draw_all: true,
@@ -510,8 +513,13 @@
             ),
         ),
     ),
+    log: (
+        log_info: true,
+        log_warning: true,
+        log_error: true,
+    ),
     scene_settings: {
-        "data/Sponza/sponza.rgs": (
+        "data/paladin/paladin.rgs": (
             camera_settings: (
                 position: (0.0, 1.0, 0.0),
                 yaw: 0.0,
@@ -522,18 +530,64 @@
                     z_far: 128.0,
                 )),
             ),
-            node_infos: {},
+            node_infos: {
+                (
+                    index: 6,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+            },
+        ),
+        "data/Sponza/sponza.rgs": (
+            camera_settings: (
+                position: (0.28067717, 2.8987079, 5.6842403),
+                yaw: 9.350057,
+                pitch: -0.12920362,
+                projection: Perspective((
+                    fov: 1.3089969,
+                    z_near: 0.025,
+                    z_far: 128.0,
+                )),
+            ),
+            node_infos: {
+                (
+                    index: 228,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 3,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 2,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 1,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+            },
         ),
     },
     recent: (
         scenes: [
             "data/Sponza/sponza.rgs",
+            "data/paladin/paladin.rgs",
         ],
     ),
     windows: (
-        window_position: (1273.0, 0.0),
-        window_size: (1278.0, 1368.0),
-        window_maximized: false,
+        window_position: (-8.0, -8.0),
+        window_size: (1920.0, 1017.0),
+        window_maximized: true,
         layout: None,
     ),
 )

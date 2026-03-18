@@ -59,16 +59,16 @@ impl Plugin for Game {
             .user_interfaces
             .add(UserInterface::new(Vector2::repeat(100.0)));
 
-        context
-            .resource_manager
-            .state()
-            .loaders
-            .lock()
-            .find_mut::<TextureLoader>()
-            .unwrap()
-            .default_import_options = TextureImportOptions::default()
-            .with_anisotropy(1.0)
-            .with_compression(CompressionOptions::Quality);
+        // context
+        //     .resource_manager
+        //     .state()
+        //     .loaders
+        //     .lock()
+        //     .find_mut::<TextureLoader>()
+        //     .unwrap()
+        //     .default_import_options = TextureImportOptions::default()
+        //     .with_anisotropy(1.0)
+        //     .with_compression(CompressionOptions::Quality);
 
         context.load_scene(
             scene_path.unwrap_or("data/Sponza/sponza.rgs"),

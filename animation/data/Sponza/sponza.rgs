@@ -49,10 +49,6 @@ __ROOT__[]
 									{
 										Value[IsSome<u8:0>]{}
 									}
-									Mobility[Flags<u8:1>]
-									{
-										Value[Id<u32:0>]{}
-									}
 									Original[Index<u32:0>Generation<u32:0>]{}
 									Tag[Value<str:"">Flags<u8:1>]{}
 									Properties[Flags<u8:1>]
@@ -103,10 +99,6 @@ __ROOT__[]
 											LodGroup[Flags<u8:1>]
 											{
 												Value[IsSome<u8:0>]{}
-											}
-											Mobility[Flags<u8:1>]
-											{
-												Value[Id<u32:0>]{}
 											}
 											Original[Index<u32:0>Generation<u32:0>]{}
 											Tag[Value<str:"">Flags<u8:1>]{}
@@ -160,7 +152,7 @@ __ROOT__[]
 										Transform[]
 										{
 											LocalScale[Value<vec3f32:202.70602; 202.70602; 202.70602>Flags<u8:1>]{}
-											LocalPosition[Value<vec3f32:0.2886645; 3.0330074; 0.67390776>Flags<u8:1>]{}
+											LocalPosition[Value<vec3f32:0.28866446; 7.239439; 0.67390764>Flags<u8:1>]{}
 											LocalRotation[Value<quat:0; 0; 0; 1>Flags<u8:1>]{}
 											PreRotation[Value<quat:0; 0; 0; 1>Flags<u8:1>]{}
 											PostRotation[Value<quat:0; 0; 0; 1>Flags<u8:1>]{}
@@ -180,10 +172,6 @@ __ROOT__[]
 										LodGroup[Flags<u8:1>]
 										{
 											Value[IsSome<u8:0>]{}
-										}
-										Mobility[Flags<u8:1>]
-										{
-											Value[Id<u32:0>]{}
 										}
 										Original[Index<u32:0>Generation<u32:0>]{}
 										Tag[Value<str:"">Flags<u8:1>]{}
@@ -8730,6 +8718,7 @@ __ROOT__[]
 											Data[Uuid<uuid:aff67e1b-cb7d-425f-adcd-af84b5ed9e5c>]{}
 										}
 										Original[Index<u32:6>Generation<u32:1>]{}
+										RenderMask[Value<u32:4294934527>Flags<u8:1>]{}
 										Scripts[Length<u32:0>]{}
 									}
 									Enabled[Value<bool:true>Flags<u8:1>]{}
@@ -10474,10 +10463,6 @@ __ROOT__[]
 										{
 											Value[IsSome<u8:0>]{}
 										}
-										Mobility[Flags<u8:1>]
-										{
-											Value[Id<u32:0>]{}
-										}
 										Original[Index<u32:0>Generation<u32:0>]{}
 										Tag[Value<str:"">Flags<u8:1>]{}
 										Properties[Flags<u8:1>]
@@ -10549,10 +10534,6 @@ __ROOT__[]
 										{
 											Value[IsSome<u8:0>]{}
 										}
-										Mobility[Flags<u8:1>]
-										{
-											Value[Id<u32:0>]{}
-										}
 										Original[Index<u32:0>Generation<u32:0>]{}
 										Tag[Value<str:"">Flags<u8:1>]{}
 										Properties[Flags<u8:1>]
@@ -10621,7 +10602,7 @@ __ROOT__[]
 						{
 							ArcData[Paused<bool:false>]
 							{
-								Listener[Basis<mat3:0.9593899; 0; -0.28208342; -0.019953726; 0.997495; -0.06786433; -0.2813768; -0.07073696; -0.95698667>Position<vec3f32:0.25342512; 0.7055167; -7.9683914>]{}
+								Listener[Basis<mat3:0.9972095; 0; 0.074651785; -0.0096184695; 0.9916647; 0.12848492; 0.07402956; 0.12884443; -0.9888976>Position<vec3f32:0.058588505; 2.5121746; 8.650933>]{}
 								Sources[]
 								{
 									Records[Length<u32:0>]{}
@@ -10662,7 +10643,7 @@ __ROOT__[]
 				Enabled[Value<bool:true>Flags<u8:1>]{}
 				IntegrationParameters[Flags<u8:1>]
 				{
-					Value[MinCcdDt<f32:0.00016666668>ContactDampingRatio<f32:5>ContactNaturalFrequency<f32:30>JointNaturalFrequency<f32:1000000>JointDampingRatio<f32:1>AllowedLinearError<f32:0.002>NormalizedMaxCorrectiveVelocity<f32:10>PredictionDistance<f32:0.002>NumSolverIterations<u64:4>NumInternalPgsIterations<u64:1>MinIslandSize<u32:128>MaxCcdSubsteps<u32:4>WarmstartCoefficient<f32:1>LengthUnit<f32:1>NumInternalStabilizationIterations<u64:4>]
+					Value[MinCcdDt<f32:0.00016666668>AllowedLinearError<f32:0.002>NormalizedMaxCorrectiveVelocity<f32:10>PredictionDistance<f32:0.002>NumSolverIterations<u64:4>NumInternalPgsIterations<u64:1>MinIslandSize<u32:128>MaxCcdSubsteps<u32:4>WarmstartCoefficient<f32:1>LengthUnit<f32:1>NumInternalStabilizationIterations<u64:4>]
 					{
 						Dt[IsSome<u8:0>]{}
 					}
@@ -10674,7 +10655,7 @@ __ROOT__[]
 				Enabled[Value<bool:true>Flags<u8:1>]{}
 				IntegrationParameters[Flags<u8:1>]
 				{
-					Value[MinCcdDt<f32:0.00016666668>ContactDampingRatio<f32:5>ContactNaturalFrequency<f32:30>JointNaturalFrequency<f32:1000000>JointDampingRatio<f32:1>AllowedLinearError<f32:0.002>NormalizedMaxCorrectiveVelocity<f32:10>PredictionDistance<f32:0.002>NumSolverIterations<u64:4>NumInternalPgsIterations<u64:1>MinIslandSize<u32:128>MaxCcdSubsteps<u32:4>WarmstartCoefficient<f32:1>LengthUnit<f32:1>NumInternalStabilizationIterations<u64:4>]
+					Value[MinCcdDt<f32:0.00016666668>AllowedLinearError<f32:0.002>NormalizedMaxCorrectiveVelocity<f32:10>PredictionDistance<f32:0.002>NumSolverIterations<u64:4>NumInternalPgsIterations<u64:1>MinIslandSize<u32:128>MaxCcdSubsteps<u32:4>WarmstartCoefficient<f32:1>LengthUnit<f32:1>NumInternalStabilizationIterations<u64:4>]
 					{
 						Dt[IsSome<u8:0>]{}
 					}
