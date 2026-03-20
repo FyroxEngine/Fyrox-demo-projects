@@ -1,4 +1,5 @@
 //! Game project.
+use fyrox::core::err;
 use fyrox::core::pool::HandlesVecExtension;
 use fyrox::graph::SceneGraph;
 use fyrox::gui::button::Button;
@@ -261,7 +262,8 @@ fn make_potions_images(
     h: usize,
 ) -> Vec<Handle<Image>> {
     let mut potions = Vec::new();
-
+    let texture = resource_manager.request::<Texture>("data/Potions.png");
+    err!("texture state: {:?}", &texture);
     for y in 0..h {
         for x in 0..w {
             potions.push(
@@ -281,11 +283,7 @@ fn make_potions_images(
                     1.0 / 6.0,
                     1.0 / 3.0,
                 ))
-                .with_texture(
-                    resource_manager
-                        .request::<Texture>("data/Potions.png")
-                        .into(),
-                )
+                .with_texture(texture.clone())
                 .build(ctx),
             );
         }

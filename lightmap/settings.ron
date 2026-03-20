@@ -510,19 +510,55 @@
             ),
         ),
     ),
+    log: (
+        log_info: true,
+        log_warning: true,
+        log_error: true,
+    ),
     scene_settings: {
         "data/Sponza/sponza.rgs": (
             camera_settings: (
-                position: (0.0, 1.0, 0.0),
-                yaw: 0.0,
-                pitch: 0.0,
+                position: (1.8261026, -0.6124325, 2.029162),
+                yaw: -4.039997,
+                pitch: 1.2107965,
                 projection: Perspective((
                     fov: 1.3089969,
                     z_near: 0.025,
                     z_far: 128.0,
                 )),
             ),
-            node_infos: {},
+            node_infos: {
+                (
+                    index: 4,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 3,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 346,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 9,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 1,
+                    generation: 2,
+                ): (
+                    is_expanded: true,
+                ),
+            },
         ),
     },
     recent: (
@@ -532,7 +568,7 @@
     ),
     windows: (
         window_position: (-8.0, -8.0),
-        window_size: (2560.0, 1377.0),
+        window_size: (1920.0, 1017.0),
         window_maximized: true,
         layout: None,
     ),

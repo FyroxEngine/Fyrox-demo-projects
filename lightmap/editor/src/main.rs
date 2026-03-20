@@ -10,6 +10,6 @@ fn main() {
         scenes: vec!["data/Sponza/sponza.rgs".into()],
         named_objects: false,
     }));
-    editor.add_game_plugin(Game);
+    editor.add_game_plugin(Game::default());
     editor.run(event_loop)
 }

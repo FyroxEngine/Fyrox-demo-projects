@@ -128,8 +128,8 @@ __ROOT__[]
 											{
 												FarPlanes[Length<u32:3>]
 												{
-													Item0[ItemData<f32:5>]{}
-													Item1[ItemData<f32:15>]{}
+													Item0[ItemData<f32:4>]{}
+													Item1[ItemData<f32:10>]{}
 													Item2[ItemData<f32:30>]{}
 												}
 											}
@@ -10602,7 +10602,7 @@ __ROOT__[]
 						{
 							ArcData[Paused<bool:false>]
 							{
-								Listener[Basis<mat3:0.9972095; 0; 0.074651785; -0.0096184695; 0.9916647; 0.12848492; 0.07402956; 0.12884443; -0.9888976>Position<vec3f32:0.058588505; 2.5121746; 8.650933>]{}
+								Listener[Basis<mat3:-0.956237; -0.0000000018626451; 0.29259327; 0.026529962; 0.99588084; 0.08670375; 0.291388; -0.09067182; 0.95229805>Position<vec3f32:0.1798445; 1.8377782; 0.30004787>]{}
 								Sources[]
 								{
 									Records[Length<u32:0>]{}

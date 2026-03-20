@@ -519,31 +519,11 @@
         log_error: true,
     ),
     scene_settings: {
-        "data/paladin/paladin.rgs": (
-            camera_settings: (
-                position: (0.0, 1.0, 0.0),
-                yaw: 0.0,
-                pitch: 0.0,
-                projection: Perspective((
-                    fov: 1.3089969,
-                    z_near: 0.025,
-                    z_far: 128.0,
-                )),
-            ),
-            node_infos: {
-                (
-                    index: 6,
-                    generation: 1,
-                ): (
-                    is_expanded: true,
-                ),
-            },
-        ),
         "data/Sponza/sponza.rgs": (
             camera_settings: (
-                position: (0.28067717, 2.8987079, 5.6842403),
-                yaw: 9.350057,
-                pitch: -0.12920362,
+                position: (0.4135828, 0.8133397, -3.3114238),
+                yaw: 9.410115,
+                pitch: 0.26079684,
                 projection: Perspective((
                     fov: 1.3089969,
                     z_near: 0.025,
@@ -552,7 +532,7 @@
             ),
             node_infos: {
                 (
-                    index: 228,
+                    index: 1,
                     generation: 1,
                 ): (
                     is_expanded: true,
@@ -570,7 +550,45 @@
                     is_expanded: true,
                 ),
                 (
-                    index: 1,
+                    index: 228,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 345,
+                    generation: 2,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 344,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+                (
+                    index: 5,
+                    generation: 1,
+                ): (
+                    is_expanded: true,
+                ),
+            },
+        ),
+        "data/paladin/paladin.rgs": (
+            camera_settings: (
+                position: (0.0, 1.0, 0.0),
+                yaw: 0.0,
+                pitch: 0.0,
+                projection: Perspective((
+                    fov: 1.3089969,
+                    z_near: 0.025,
+                    z_far: 128.0,
+                )),
+            ),
+            node_infos: {
+                (
+                    index: 6,
                     generation: 1,
                 ): (
                     is_expanded: true,
